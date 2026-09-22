@@ -1,478 +1,270 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
 }
 
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #f5f7fb;
-  color: #172033;
-  line-height: 1.6;
-}
-
-
-/* =========================
-   HERO
-========================= */
-
-.hero {
-  min-height: 620px;
+  min-height: 100vh;
   background:
-    radial-gradient(
-      circle at 85% 20%,
-      rgba(80, 130, 255, 0.25),
-      transparent 35%
-    ),
-    linear-gradient(
-      135deg,
-      #0c1733,
-      #172d63 55%,
-      #234b91
-    );
-
-  color: white;
-  position: relative;
-  overflow: hidden;
+    radial-gradient(circle at top left, #dff7ff 0%, transparent 35%),
+    radial-gradient(circle at bottom right, #e8ddff 0%, transparent 35%),
+    linear-gradient(135deg, #f8fdff, #f5f7ff);
+  color: #243047;
 }
 
-
-/* =========================
-   NAVBAR
-========================= */
-
-.navbar {
-  width: min(1150px, 92%);
-  margin: auto;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 28px 0;
+/* Main container */
+.container {
+  width: 92%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 25px 0 45px;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  font-size: 20px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.brand-icon {
-  font-size: 28px;
-}
-
-.admin-link {
-  color: white;
-  text-decoration: none;
-
-  border: 1px solid rgba(255,255,255,.4);
-  padding: 10px 20px;
-
-  border-radius: 30px;
-
-  transition: .3s;
-}
-
-.admin-link:hover {
-  background: white;
-  color: #142756;
-}
-
-
-/* =========================
-   HERO CONTENT
-========================= */
-
-.hero-content {
-  width: min(1150px, 92%);
-  margin: auto;
-
-  padding-top: 90px;
-}
-
-.badge {
-  display: inline-block;
-
-  background: rgba(255,255,255,.12);
-
-  border: 1px solid rgba(255,255,255,.2);
-
-  padding: 8px 16px;
-
-  border-radius: 30px;
-
-  font-size: 14px;
-
-  margin-bottom: 25px;
-}
-
-.hero h1 {
-  font-size: clamp(50px, 8vw, 86px);
-
-  line-height: 1.05;
-
-  letter-spacing: -3px;
-
-  margin-bottom: 25px;
-}
-
-.hero h1 span {
-  color: #7fd7ff;
-}
-
-.hero p {
-  max-width: 600px;
-
-  font-size: 20px;
-
-  color: #d9e5ff;
-
-  margin-bottom: 35px;
-}
-
-
-/* =========================
-   BUTTONS
-========================= */
-
-.hero-buttons {
-  display: flex;
-  gap: 15px;
-
-  flex-wrap: wrap;
-}
-
-.primary-btn,
-.secondary-btn {
-  text-decoration: none;
-
-  padding: 14px 25px;
-
-  border-radius: 10px;
-
-  font-weight: bold;
-
-  transition: .3s;
-}
-
-.primary-btn {
-  background: white;
-  color: #17316b;
-}
-
-.primary-btn:hover {
-  transform: translateY(-3px);
-}
-
-.secondary-btn {
-  border: 1px solid rgba(255,255,255,.4);
-  color: white;
-}
-
-.secondary-btn:hover {
-  background: rgba(255,255,255,.1);
-}
-
-
-/* =========================
-   PORTALS
-========================= */
-
-.portal-section {
-  width: min(1150px, 92%);
-
-  margin: auto;
-
-  padding: 90px 0;
-}
-
-.section-heading {
+/* Header */
+header {
   text-align: center;
-
-  max-width: 700px;
-
-  margin: 0 auto 50px;
+  padding: 25px 15px 20px;
 }
 
-.small-title {
-  color: #3567d6;
-
-  font-size: 13px;
-
+header h1 {
+  font-size: 30px;
   font-weight: 800;
-
   letter-spacing: 2px;
+  color: #176b87;
 }
 
-.section-heading h2 {
-  font-size: 42px;
-
-  margin: 8px 0 12px;
-}
-
-.section-heading p {
-  color: #68738a;
-
+header p {
+  margin-top: 5px;
   font-size: 17px;
+  color: #667085;
 }
 
+/* Main heading */
+h2 {
+  text-align: center;
+  font-size: 27px;
+  margin: 20px 0 10px;
+  color: #253858;
+}
 
-/* =========================
-   PORTAL GRID
-========================= */
+.intro {
+  text-align: center;
+  color: #667085;
+  margin-bottom: 25px;
+}
 
+/* Pages */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Portal buttons / cards */
 .portal-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(3, 1fr);
-
-  gap: 25px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 25px;
 }
 
-.portal {
-  text-decoration: none;
+.portal-card,
+.portal-button,
+button {
+  border: none;
+  cursor: pointer;
+}
 
-  color: inherit;
-
-  background: white;
-
+.portal-card {
+  min-height: 180px;
+  padding: 25px 15px;
   border-radius: 22px;
-
-  padding: 30px;
-
-  min-height: 330px;
-
-  border: 1px solid #e5e9f2;
-
-  box-shadow:
-    0 15px 40px rgba(20,40,80,.07);
-
-  transition: .35s;
-
-  position: relative;
-
-  overflow: hidden;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 10px 30px rgba(55, 80, 110, 0.12);
+  border: 1px solid rgba(255,255,255,0.8);
+  transition: 0.25s ease;
 }
 
-.portal:hover {
-  transform: translateY(-8px);
-
-  box-shadow:
-    0 25px 55px rgba(20,40,80,.14);
+.portal-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 16px 35px rgba(55, 80, 110, 0.18);
 }
 
-.portal-icon {
-  width: 70px;
-  height: 70px;
-
-  display: flex;
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 35px;
-
-  border-radius: 18px;
-
-  margin-bottom: 30px;
+.portal-card .icon {
+  font-size: 48px;
+  margin-bottom: 12px;
 }
 
-.mental .portal-icon {
-  background: #f0e9ff;
+.portal-card h3 {
+  font-size: 19px;
+  margin-bottom: 7px;
+  color: #26384d;
 }
 
-.physical .portal-icon {
-  background: #e5f7ed;
+.portal-card p {
+  font-size: 14px;
+  color: #778398;
 }
 
-.financial .portal-icon {
-  background: #fff2d8;
-}
-
-.portal-label {
-  font-size: 11px;
-
-  font-weight: 800;
-
-  letter-spacing: 1.5px;
-
-  color: #718096;
-}
-
-.portal h3 {
-  font-size: 27px;
-
-  margin: 6px 0 12px;
-}
-
-.portal p {
-  color: #68738a;
-
-  font-size: 15px;
-
-  margin-bottom: 25px;
-}
-
-.portal-arrow {
-  font-weight: bold;
-
-  color: #315fc5;
-}
-
-
-/* =========================
-   ABOUT
-========================= */
-
-.about {
-  width: min(1150px, 92%);
-
-  margin: 0 auto 90px;
-}
-
-.about-box {
-  background: white;
-
-  border: 1px solid #e5e9f2;
-
+/* If your HTML uses buttons */
+.portal-button {
+  width: 100%;
+  padding: 25px 15px;
   border-radius: 22px;
-
-  padding: 40px;
-
-  display: flex;
-
-  gap: 25px;
-
-  align-items: flex-start;
+  background: white;
+  color: #26384d;
+  box-shadow: 0 10px 30px rgba(55, 80, 110, 0.12);
+  transition: 0.25s ease;
 }
 
-.about-icon {
-  font-size: 45px;
+.portal-button:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 35px rgba(55, 80, 110, 0.18);
 }
 
-.about h2 {
-  font-size: 30px;
-
-  margin: 7px 0 10px;
-}
-
-.about p {
-  color: #68738a;
-
-  max-width: 750px;
-}
-
-
-/* =========================
-   FOOTER
-========================= */
-
-footer {
-  background: #0b142b;
-
+/* General buttons */
+button {
+  padding: 13px 22px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #149eca, #6c63e8);
   color: white;
-
-  text-align: center;
-
-  padding: 45px 20px;
+  font-size: 15px;
+  font-weight: 700;
+  box-shadow: 0 7px 18px rgba(75, 100, 200, 0.22);
+  transition: 0.2s ease;
 }
 
-.footer-brand {
-  font-size: 20px;
-
-  font-weight: 800;
+button:hover {
+  transform: translateY(-2px);
+  opacity: 0.93;
 }
 
-footer p {
-  color: #aebbd6;
-
-  margin-top: 7px;
-}
-
-footer .copyright {
+/* Forms */
+form {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  border-radius: 22px;
+  box-shadow: 0 12px 35px rgba(55, 80, 110, 0.12);
   margin-top: 20px;
+}
 
+label {
+  display: block;
+  margin: 14px 0 7px;
+  font-weight: 700;
+  color: #344054;
+}
+
+input,
+textarea,
+select {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 11px;
+  border: 1px solid #d7e0ea;
+  background: #fbfdff;
+  color: #253858;
+  font-size: 15px;
+  outline: none;
+  transition: 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #53b8d8;
+  box-shadow: 0 0 0 3px rgba(83,184,216,0.15);
+}
+
+textarea {
+  min-height: 130px;
+  resize: vertical;
+}
+
+/* Back button */
+.back-btn {
+  background: #eef4f8;
+  color: #426071;
+  box-shadow: none;
+  margin-bottom: 15px;
+}
+
+.back-btn:hover {
+  background: #e2edf3;
+}
+
+/* Success message */
+.success {
+  background: #e9fff5;
+  color: #087443;
+  border: 1px solid #b9efd7;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+/* Error message */
+.error {
+  background: #fff0f1;
+  color: #b42318;
+  border: 1px solid #ffd0d4;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 35px;
+  color: #8a96a8;
   font-size: 13px;
 }
 
+/* Mobile */
+@media (max-width: 700px) {
 
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 800px) {
-
-  .hero {
-    min-height: 580px;
+  .container {
+    width: 94%;
+    padding-top: 15px;
   }
 
-  .navbar {
-    padding: 20px 0;
+  header h1 {
+    font-size: 25px;
   }
 
-  .brand {
-    font-size: 16px;
-  }
-
-  .admin-link {
-    padding: 8px 13px;
-
-    font-size: 13px;
-  }
-
-  .hero-content {
-    padding-top: 70px;
-  }
-
-  .hero h1 {
-    font-size: 55px;
-
-    letter-spacing: -2px;
-  }
-
-  .hero p {
-    font-size: 17px;
+  h2 {
+    font-size: 23px;
   }
 
   .portal-grid {
     grid-template-columns: 1fr;
+    gap: 14px;
   }
 
-  .section-heading h2 {
-    font-size: 34px;
+  .portal-card,
+  .portal-button {
+    min-height: 145px;
   }
 
-  .about-box {
-    flex-direction: column;
-
-    padding: 30px;
+  form {
+    padding: 20px;
   }
-}
-
-
-@media (max-width: 450px) {
-
-  .hero h1 {
-    font-size: 45px;
-  }
-
-  .hero-buttons {
-    flex-direction: column;
-  }
-
-  .primary-btn,
-  .secondary-btn {
-    text-align: center;
-  }
-
 }
