@@ -170,8 +170,14 @@ app.get("/api/stats", auth, (req, res) => {
   res.json(stats);
 });
 
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 
-app.listen(PORT, () => console.log(`Seva Swasthya running on http://localhost:${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`Seva Swasthya running on port ${PORT}`);
+});
