@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Submit Problem</title><link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar"><a href="/">← Home</a><strong id="portalTitle">Submit Concern</strong></header>
+<main class="form-wrap">
+<form id="problemForm" class="card">
+  <h1 id="heading">Submit your concern</h1>
+  <p class="muted">Only the relevant admin team can access this submission.</p>
+  <label><input type="checkbox" id="anonymous" name="anonymous"> Submit anonymously</label>
+  <div id="identity">
+    <label>Name<input name="name" placeholder="Your name"></label>
+    <label>Mobile number (optional)<input name="phone" inputmode="tel" placeholder="+91..."></label>
+  </div>
+  <label>Urgency
+    <select name="urgency"><option value="normal">Normal</option><option value="urgent">Urgent</option></select>
+  </label>
+  <label>Problem title<input required name="title" maxlength="120" placeholder="Short title"></label>
+  <label>Describe your problem<textarea required name="description" rows="7" maxlength="5000" placeholder="Explain your concern..."></textarea></label>
+  <button type="submit">Submit Concern</button>
+  <div id="message"></div>
+</form>
+</main>
+<script>
+const params = new URLSearchParams(location.search);
+const portal = params.get("portal");
+const names = {mental:"Mental Health",physical:"Physical Health",financial:"Financial Health"};
+if (!names[portal]) location.href="/";
+document.title = names[portal] + " - Seva Swasthya";
+document.getElementById("portalTitle").textContent = names[portal];
+document.getElementById("heading").textContent = "Submit a " + names[portal] + " concern";
+const anonymous = document.getElementById("anonymous");
+anonymous.onchange = () => document.getElementById("identity").style.display = anonymous.checked ? "none" : "block";
+document.getElementById("problemForm").onsubmit = async e => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd.entries());
+  data.portal = portal;
+  data.anonymous = anonymous.checked;
+  const r = await fetch("/api/submit",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+  const j = await r.json();
+  const msg = document.getElementById("message");
+  if (r.ok) {
+    msg.className="success"; msg.textContent="Submitted successfully. Your reference ID is #" + j.id + ".";
+    e.target.reset();
+  } else { msg.className="error"; msg.textContent=j.error || "Something went wrong."; }
+};
+</script>
+</body></html>

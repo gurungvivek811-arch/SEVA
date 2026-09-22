@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin Dashboard</title><link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar"><a href="/">SEVA SWASTHYA</a><strong>Admin Dashboard</strong><button id="logout" class="small-btn">Logout</button></header>
+<main class="admin-wrap">
+<section id="loginCard" class="card login-card">
+<h1>Admin Login</h1><p class="muted">Use the account assigned to your portal.</p>
+<form id="loginForm"><label>Username<input name="username" required></label><label>Password<input type="password" name="password" required></label><button>Login</button><div id="loginMsg"></div></form>
+</section>
+<section id="dashboard" style="display:none">
+<div class="welcome"><div><h1>Problems Dashboard</h1><p id="adminInfo"></p></div></div>
+<div class="stats"><div><b id="newCount">0</b><span>New</span></div><div><b id="progressCount">0</b><span>In Progress</span></div><div><b id="resolvedCount">0</b><span>Resolved</span></div></div>
+<div id="problems"></div>
+</section>
+</main>
+<script>
+let currentAdmin=null;
+async function loadSession(){
+ const r=await fetch("/api/session"), j=await r.json();
+ if(j.loggedIn){ currentAdmin=j.admin; showDashboard(); }
+}
+function showDashboard(){
+ loginCard.style.display="none"; dashboard.style.display="block";
+ adminInfo.textContent = "Logged in as " + currentAdmin.username + " • " + currentAdmin.role;
+ refresh();
+}
+loginForm.onsubmit=async e=>{
+ e.preventDefault(); const data=Object.fromEntries(new FormData(e.target));
+ const r=await fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+ const j=await r.json();
+ if(!r.ok){loginMsg.className="error";loginMsg.textContent=j.error;return}
+ currentAdmin=j.admin; showDashboard();
+};
+logout.onclick=async()=>{await fetch("/api/logout",{method:"POST"});location.reload()};
+async function refresh(){
+ const [pr,sr]=await Promise.all([fetch("/api/problems"),fetch("/api/stats")]);
+ if(pr.status===401){location.reload();return}
+ const problems=await pr.json(), stats=await sr.json();
+ newCount.textContent=stats.new; progressCount.textContent=stats.in_progress; resolvedCount.textContent=stats.resolved;
+ problemsDiv.innerHTML = problems.length ? problems.map(card).join("") : '<div class="card"><p>No problems submitted yet.</p></div>';
+}
+const problemsDiv=document.getElementById("problems");
+function esc(x){return String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function card(p){
+ return `<article class="problem card">
+ <div class="problem-head"><div><span class="pill">${esc(p.portal)}</span><span class="pill ${esc(p.urgency)}">${esc(p.urgency)}</span><h2>#${p.id} — ${esc(p.title)}</h2></div><small>${esc(p.created_at)}</small></div>
+ <p>${esc(p.description).replace(/\n/g,"<br>")}</p>
+ <p class="muted">${p.anonymous ? "Anonymous submission" : "Name: "+esc(p.name||"Not provided")+" • Phone: "+esc(p.phone||"Not provided")}</p>
+ <label>Status<select onchange="updateProblem(${p.id},this.value,null)"><option ${p.status==="new"?"selected":""} value="new">New</option><option ${p.status==="in_progress"?"selected":""} value="in_progress">In Progress</option><option ${p.status==="resolved"?"selected":""} value="resolved">Resolved</option></select></label>
+ <label>Admin note<textarea id="note-${p.id}" rows="2" placeholder="Internal note">${esc(p.admin_note||"")}</textarea></label>
+ <button onclick="saveNote(${p.id})">Save Note</button>
+ </article>`;
+}
+async function updateProblem(id,status,note){
+ await fetch("/api/problems/"+id,{method:"PATCH",headers:{"Content-Type":"application/json"},body:JSON.stringify({status,admin_note:note})});
+ refresh();
+}
+async function saveNote(id){
+ const note=document.getElementById("note-"+id).value;
+ await updateProblem(id,null,note);
+}
+loadSession();
+</script>
+</body></html>
