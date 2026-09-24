@@ -1,23 +1,34 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>Admin Portal - Seva Swasthya</title>
 
-  <link rel="stylesheet" href="/style.css">
+  <link
+    rel="stylesheet"
+    href="/style.css"
+  >
 
   <style>
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      color: #263852;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
       background:
         radial-gradient(
@@ -35,56 +46,80 @@
           #f5fbff,
           #f8f7ff
         );
+
+      color: #263852;
+
+      min-height: 100vh;
     }
 
-    button,
-    input,
-    select {
-      font-family: inherit;
-    }
 
-    /* =========================================
+    /* =====================================
        TOP BAR
-       ========================================= */
+    ===================================== */
 
     .admin-topbar {
+
       width: 100%;
+
       min-height: 76px;
-      padding: 0 5%;
+
+      padding:
+        0 5%;
 
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
 
+      border-bottom:
+        1px solid
+        rgba(215,228,238,.8);
+
+      background:
+        rgba(255,255,255,.82);
+
+      backdrop-filter:
+        blur(18px);
+
       position: sticky;
+
       top: 0;
-      z-index: 100;
 
-      background: rgba(255,255,255,.82);
-      backdrop-filter: blur(18px);
-
-      border-bottom: 1px solid rgba(215,228,238,.8);
+      z-index: 50;
     }
 
+
     .admin-brand {
+
       display: flex;
+
       align-items: center;
+
       gap: 12px;
 
       color: #183d55;
+
       text-decoration: none;
 
-      font-size: 17px;
       font-weight: 900;
+
       letter-spacing: 1px;
+
+      font-size: 17px;
     }
 
+
     .admin-brand-icon {
+
       width: 42px;
+
       height: 42px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       border-radius: 13px;
@@ -96,28 +131,44 @@
           #eeeaff
         );
 
-      box-shadow:
-        0 8px 20px rgba(65,115,145,.12);
-
       font-size: 21px;
+
+      box-shadow:
+        0 8px 20px
+        rgba(65,115,145,.12);
     }
+
 
     .admin-title {
+
       color: #718197;
+
       font-size: 13px;
+
       font-weight: 700;
+
+      letter-spacing: 1px;
     }
 
+
     #logout {
+
       display: none;
 
-      border: 1px solid #dce6ed;
+      border: 0;
+
+      padding:
+        10px 17px;
+
       border-radius: 11px;
 
-      padding: 10px 17px;
+      background: #fff;
 
-      background: white;
       color: #60758a;
+
+      border:
+        1px solid
+        #dce6ed;
 
       cursor: pointer;
 
@@ -126,38 +177,47 @@
       transition: .2s ease;
     }
 
+
     #logout:hover {
+
       color: #c13d4a;
-      border-color: #f0bcc2;
+
+      border-color:
+        #f0bcc2;
+
       background: #fff6f7;
     }
 
-    /* =========================================
+
+    /* =====================================
        MAIN
-       ========================================= */
+    ===================================== */
 
     .admin-wrap {
+
       width: 92%;
+
       max-width: 1180px;
 
       margin: 0 auto;
 
       padding:
-        45px 0
-        80px;
+        45px 0 80px;
     }
 
-    /* =========================================
+
+    /* =====================================
        LOGIN CARD
-       ========================================= */
+    ===================================== */
 
     .login-card {
+
       width: 100%;
+
       max-width: 470px;
 
       margin:
-        35px auto
-        70px;
+        35px auto 70px;
 
       padding: 44px;
 
@@ -167,7 +227,8 @@
         rgba(255,255,255,.94);
 
       border:
-        1px solid rgba(255,255,255,.95);
+        1px solid
+        rgba(255,255,255,.95);
 
       border-radius: 30px;
 
@@ -175,37 +236,52 @@
         0 25px 75px
         rgba(45,82,110,.15);
 
-      backdrop-filter: blur(18px);
+      backdrop-filter:
+        blur(18px);
 
       animation:
         loginAppear .6s ease;
     }
 
+
     @keyframes loginAppear {
+
       from {
+
         opacity: 0;
+
         transform:
           translateY(25px)
           scale(.98);
+
       }
 
       to {
+
         opacity: 1;
+
         transform:
           translateY(0)
           scale(1);
+
       }
+
     }
 
+
     .login-logo {
+
       width: 82px;
+
       height: 82px;
 
       margin:
         0 auto 18px;
 
       display: flex;
+
       align-items: center;
+
       justify-content: center;
 
       border-radius: 25px;
@@ -217,58 +293,77 @@
           #efecff
         );
 
+      font-size: 40px;
+
       box-shadow:
         0 13px 30px
         rgba(68,110,145,.14);
-
-      font-size: 40px;
     }
 
+
     .login-badge {
+
       display: inline-block;
 
-      padding: 8px 15px;
+      padding:
+        8px 15px;
 
       border-radius: 50px;
 
       background: #f0f9fc;
-      border: 1px solid #dceef4;
+
+      border:
+        1px solid
+        #dceef4;
 
       color: #39819c;
 
       font-size: 10px;
+
       font-weight: 900;
+
       letter-spacing: 1.4px;
 
       margin-bottom: 16px;
     }
 
-    .login-card h1 {
-      margin: 0 0 10px;
 
-      color: #263852;
+    .login-card h1 {
+
+      margin:
+        0 0 10px;
 
       font-size: 35px;
+
       line-height: 1.15;
+
+      color: #263852;
 
       letter-spacing: -.7px;
     }
 
+
     .login-card .muted {
+
       margin:
         0 0 28px;
 
       color: #748397;
 
       font-size: 14px;
+
       line-height: 1.6;
     }
 
+
     .login-card form {
+
       text-align: left;
     }
 
+
     .login-card label {
+
       display: block;
 
       margin-top: 19px;
@@ -276,87 +371,100 @@
       color: #344b61;
 
       font-size: 13px;
+
       font-weight: 800;
     }
 
-    /* =========================================
-       INPUT
-       ========================================= */
 
     .input-box {
+
       position: relative;
 
       display: flex;
+
       align-items: center;
 
-      height: 54px;
-
       margin-top: 8px;
+
+      height: 54px;
 
       background: #fbfdff;
 
       border:
-        1px solid #dce6ee;
+        1px solid
+        #dce6ee;
 
       border-radius: 14px;
 
       transition: .25s ease;
     }
 
+
     .input-box > span {
-      width: 45px;
+
+      width: 48px;
 
       display: flex;
-      align-items: center;
+
       justify-content: center;
 
-      font-size: 17px;
+      align-items: center;
+
+      font-size: 18px;
 
       opacity: .8;
     }
 
+
     .input-box input {
+
       flex: 1;
 
       width: 100%;
+
       height: 100%;
 
+      border: none !important;
+
+      outline: none !important;
+
+      background: transparent !important;
+
+      box-shadow: none !important;
+
       padding:
-        0 8px 0 0;
+        0 8px 0 0 !important;
 
-      margin: 0;
-
-      border: 0;
-      outline: 0;
-
-      background: transparent;
+      margin: 0 !important;
 
       color: #263852;
 
       font-size: 15px;
     }
 
-    .input-box input::placeholder {
-      color: #9aa8b5;
-    }
 
     .input-box:focus-within {
-      border-color: #50b6d5;
 
-      background: white;
+      border-color:
+        #50b6d5;
+
+      background: #fff;
 
       box-shadow:
         0 0 0 4px
         rgba(80,182,213,.12);
     }
 
+
     .password-toggle {
-      width: 48px;
+
+      width: 50px;
+
       height: 52px;
 
       padding: 0;
 
-      border: 0;
+      border: none;
 
       background: transparent;
 
@@ -367,18 +475,18 @@
       font-size: 17px;
     }
 
-    /* =========================================
-       LOGIN BUTTON
-       ========================================= */
 
     .admin-login-btn {
+
       width: 100%;
 
       margin-top: 28px;
 
-      padding: 16px 20px;
+      padding:
+        16px 20px;
 
-      border: 0;
+      border: none;
+
       border-radius: 14px;
 
       background:
@@ -391,6 +499,7 @@
       color: white;
 
       font-size: 15px;
+
       font-weight: 800;
 
       cursor: pointer;
@@ -402,61 +511,31 @@
       transition: .25s ease;
     }
 
+
     .admin-login-btn:hover {
-      transform: translateY(-2px);
+
+      transform:
+        translateY(-3px);
 
       box-shadow:
         0 18px 38px
         rgba(76,113,215,.32);
     }
 
+
     .admin-login-btn:disabled {
+
       opacity: .65;
-      cursor: wait;
+
+      cursor:
+        not-allowed;
+
       transform: none;
     }
 
-    /* =========================================
-       LOGIN MESSAGE
-       ========================================= */
-
-    .error {
-      margin-top: 15px;
-
-      padding: 12px 14px;
-
-      border-radius: 12px;
-
-      background: #fff1f2;
-      border: 1px solid #ffd0d5;
-
-      color: #b42318;
-
-      font-size: 13px;
-      font-weight: 700;
-
-      text-align: center;
-    }
-
-    .success {
-      margin-top: 15px;
-
-      padding: 12px 14px;
-
-      border-radius: 12px;
-
-      background: #effcf5;
-      border: 1px solid #c9f0dc;
-
-      color: #16734b;
-
-      font-size: 13px;
-      font-weight: 700;
-
-      text-align: center;
-    }
 
     .back-home {
+
       display: inline-block;
 
       margin-top: 24px;
@@ -466,77 +545,143 @@
       text-decoration: none;
 
       font-size: 13px;
+
+      font-weight: 700;
+    }
+
+
+    .error {
+
+      margin-top: 15px;
+
+      padding:
+        12px 14px;
+
+      border-radius: 12px;
+
+      background: #fff1f2;
+
+      border:
+        1px solid
+        #ffd0d5;
+
+      color: #b42318;
+
+      font-size: 13px;
+
       font-weight: 700;
 
-      transition: .2s ease;
+      text-align: center;
+
+      line-height: 1.5;
     }
 
-    .back-home:hover {
-      color: #168caf;
-      transform: translateX(-3px);
+
+    .success {
+
+      margin-top: 15px;
+
+      padding:
+        12px 14px;
+
+      border-radius: 12px;
+
+      background: #effcf5;
+
+      border:
+        1px solid
+        #c9f0dc;
+
+      color: #16734b;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      text-align: center;
     }
 
-    /* =========================================
+
+    /* =====================================
        DASHBOARD
-       ========================================= */
+    ===================================== */
 
     .dashboard-head {
+
       display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        flex-end;
 
       gap: 20px;
 
       margin-bottom: 28px;
     }
 
-    .dashboard-label {
-      display: inline-block;
 
-      margin-bottom: 8px;
+    .dashboard-label {
+
+      display: inline-block;
 
       color: #3b8ba6;
 
       font-size: 11px;
+
       font-weight: 900;
+
       letter-spacing: 1.5px;
+
+      margin-bottom: 8px;
     }
 
+
     .dashboard-head h1 {
+
       margin: 0;
 
-      color: #263852;
-
       font-size: 38px;
+
+      color: #263852;
 
       letter-spacing: -.8px;
     }
 
+
     .dashboard-head p {
-      margin: 8px 0 0;
+
+      margin:
+        8px 0 0;
 
       color: #758497;
 
       font-size: 14px;
     }
 
-    /* =========================================
+
+    /* =====================================
        STATS
-       ========================================= */
+    ===================================== */
 
     .stats {
+
       display: grid;
 
       grid-template-columns:
-        repeat(3,1fr);
+        repeat(4, 1fr);
 
       gap: 18px;
 
       margin-bottom: 30px;
     }
 
+
     .stat-card {
+
       position: relative;
+
       overflow: hidden;
 
       padding: 25px;
@@ -545,7 +690,8 @@
         rgba(255,255,255,.9);
 
       border:
-        1px solid #e4edf3;
+        1px solid
+        #e4edf3;
 
       border-radius: 20px;
 
@@ -554,60 +700,55 @@
         rgba(50,80,105,.07);
     }
 
-    .stat-card::after {
-      content: "";
-
-      position: absolute;
-
-      right: -25px;
-      top: -25px;
-
-      width: 90px;
-      height: 90px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(80,180,215,.09);
-    }
 
     .stat-number {
+
       display: block;
 
-      margin-bottom: 5px;
+      font-size: 34px;
+
+      font-weight: 900;
 
       color: #263852;
 
-      font-size: 34px;
-      font-weight: 900;
+      margin-bottom: 5px;
     }
 
+
     .stat-name {
+
       color: #78899b;
 
       font-size: 13px;
+
       font-weight: 700;
     }
 
-    /* =========================================
+
+    /* =====================================
        FILTER
-       ========================================= */
+    ===================================== */
 
     .filter-bar {
+
       display: flex;
+
       flex-wrap: wrap;
+
       align-items: center;
 
       gap: 10px;
 
       padding: 14px;
+
       margin-bottom: 22px;
 
       background:
         rgba(255,255,255,.9);
 
       border:
-        1px solid #e2ebf1;
+        1px solid
+        #e2ebf1;
 
       border-radius: 17px;
 
@@ -616,8 +757,10 @@
         rgba(50,80,105,.06);
     }
 
+
     .filter-btn {
-      border: 0;
+
+      border: none;
 
       padding:
         10px 17px;
@@ -629,6 +772,7 @@
       color: #62768a;
 
       font-size: 12px;
+
       font-weight: 800;
 
       cursor: pointer;
@@ -636,8 +780,10 @@
       transition: .2s ease;
     }
 
+
     .filter-btn:hover,
     .filter-btn.active {
+
       background:
         linear-gradient(
           135deg,
@@ -646,77 +792,82 @@
         );
 
       color: white;
-
-      box-shadow:
-        0 7px 18px
-        rgba(76,113,215,.18);
     }
 
-    /* =========================================
+
+    /* =====================================
        PROBLEMS
-       ========================================= */
+    ===================================== */
 
     #problems {
+
       display: grid;
+
       gap: 18px;
     }
 
+
     .problem-card {
-      padding: 25px;
 
       background:
         rgba(255,255,255,.94);
 
       border:
-        1px solid #e1ebf1;
+        1px solid
+        #e1ebf1;
 
       border-radius: 21px;
+
+      padding: 25px;
 
       box-shadow:
         0 10px 32px
         rgba(50,80,105,.07);
-
-      transition: .25s ease;
     }
 
-    .problem-card:hover {
-      transform: translateY(-2px);
-
-      box-shadow:
-        0 16px 38px
-        rgba(50,80,105,.11);
-    }
 
     .problem-top {
+
       display: flex;
 
-      justify-content: space-between;
-      align-items: flex-start;
+      justify-content:
+        space-between;
+
+      align-items:
+        flex-start;
 
       gap: 15px;
 
       margin-bottom: 14px;
     }
 
+
     .problem-title {
+
       margin: 0;
 
       color: #263852;
 
       font-size: 19px;
+
       line-height: 1.3;
     }
 
+
     .problem-id {
+
       margin-top: 5px;
 
       color: #94a2b0;
 
       font-size: 11px;
+
       font-weight: 700;
     }
 
+
     .portal-tag {
+
       display: inline-flex;
 
       padding:
@@ -729,13 +880,17 @@
       color: #3c8aa2;
 
       font-size: 10px;
+
       font-weight: 900;
 
       white-space: nowrap;
     }
 
+
     .problem-description {
-      margin: 14px 0;
+
+      margin:
+        14px 0;
 
       padding: 15px;
 
@@ -746,14 +901,17 @@
       color: #52677b;
 
       font-size: 14px;
+
       line-height: 1.65;
 
       white-space: pre-wrap;
-      overflow-wrap: anywhere;
     }
 
+
     .problem-meta {
+
       display: flex;
+
       flex-wrap: wrap;
 
       gap: 9px;
@@ -761,7 +919,9 @@
       margin-bottom: 18px;
     }
 
+
     .meta-item {
+
       padding:
         7px 10px;
 
@@ -772,35 +932,49 @@
       color: #66798c;
 
       font-size: 11px;
+
       font-weight: 700;
     }
 
+
     .urgent {
-      background: #fff0f1 !important;
-      color: #b42318 !important;
+
+      background:
+        #fff0f1 !important;
+
+      color:
+        #b42318 !important;
     }
 
+
     .problem-actions {
+
       display: flex;
+
       align-items: center;
-      flex-wrap: wrap;
 
       gap: 10px;
+
+      flex-wrap: wrap;
 
       padding-top: 17px;
 
       border-top:
-        1px solid #edf1f4;
+        1px solid
+        #edf1f4;
     }
 
+
     .status-select {
+
       min-width: 160px;
 
       padding:
         10px 12px;
 
       border:
-        1px solid #dce6ed;
+        1px solid
+        #dce6ed;
 
       border-radius: 10px;
 
@@ -809,12 +983,15 @@
       color: #506579;
 
       font-size: 12px;
+
       font-weight: 700;
 
       outline: none;
     }
 
+
     .note-input {
+
       flex: 1;
 
       min-width: 220px;
@@ -823,7 +1000,8 @@
         10px 12px;
 
       border:
-        1px solid #dce6ed;
+        1px solid
+        #dce6ed;
 
       border-radius: 10px;
 
@@ -832,20 +1010,14 @@
       font-size: 12px;
     }
 
-    .note-input:focus,
-    .status-select:focus {
-      border-color: #51b6d5;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(81,182,213,.1);
-    }
 
     .save-btn {
+
       padding:
         11px 17px;
 
-      border: 0;
+      border: none;
+
       border-radius: 10px;
 
       background:
@@ -858,22 +1030,17 @@
       color: white;
 
       font-size: 12px;
+
       font-weight: 800;
 
       cursor: pointer;
     }
 
-    .save-btn:disabled {
-      opacity: .6;
-      cursor: wait;
-    }
-
-    /* =========================================
-       EMPTY / LOADING
-       ========================================= */
 
     .empty-state {
-      padding: 55px 20px;
+
+      padding:
+        55px 20px;
 
       text-align: center;
 
@@ -881,111 +1048,159 @@
         rgba(255,255,255,.85);
 
       border:
-        1px dashed #d6e2ea;
+        1px dashed
+        #d6e2ea;
 
       border-radius: 20px;
 
       color: #7b8b9b;
     }
 
+
     .empty-icon {
-      margin-bottom: 10px;
+
       font-size: 40px;
+
+      margin-bottom: 10px;
     }
 
+
     .loading {
-      padding: 40px;
 
       text-align: center;
+
+      padding: 40px;
 
       color: #7b8b9b;
     }
 
-    /* =========================================
+
+    /* =====================================
        MOBILE
-       ========================================= */
+    ===================================== */
+
+    @media (max-width: 850px) {
+
+      .stats {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+    }
+
 
     @media (max-width: 700px) {
 
       .admin-topbar {
+
         padding: 0 4%;
+
         min-height: 68px;
       }
 
+
       .admin-brand {
+
         font-size: 13px;
       }
 
+
       .admin-brand-icon {
+
         width: 36px;
+
         height: 36px;
+
         font-size: 18px;
       }
 
+
       .admin-title {
+
         display: none;
       }
 
+
       .admin-wrap {
+
         width: 92%;
+
         padding-top: 28px;
       }
 
+
       .login-card {
-        padding: 32px 22px;
+
+        padding:
+          32px 22px;
+
         margin-top: 10px;
+
         border-radius: 25px;
       }
 
+
       .login-card h1 {
+
         font-size: 29px;
       }
 
-      .dashboard-head {
-        align-items: flex-start;
-      }
-
-      .dashboard-head h1 {
-        font-size: 30px;
-      }
 
       .stats {
+
         grid-template-columns: 1fr;
       }
 
+
       .problem-top {
-        flex-direction: column;
+
+        flex-direction:
+          column;
       }
 
-      .portal-tag {
-        align-self: flex-start;
-      }
 
       .problem-actions {
-        flex-direction: column;
-        align-items: stretch;
+
+        flex-direction:
+          column;
+
+        align-items:
+          stretch;
       }
+
 
       .status-select,
       .note-input,
       .save-btn {
+
         width: 100%;
       }
+
     }
+
   </style>
+
 </head>
+
 
 <body>
 
-  <!-- =========================================
+
+  <!-- =====================================
        TOP BAR
-       ========================================= -->
+  ===================================== -->
 
   <header class="admin-topbar">
 
-    <a href="/" class="admin-brand">
+    <a
+      href="/"
+      class="admin-brand"
+    >
 
-      <span class="admin-brand-icon">
+      <span
+        class="admin-brand-icon"
+      >
         🤝
       </span>
 
@@ -995,9 +1210,11 @@
 
     </a>
 
+
     <span class="admin-title">
       ADMIN PORTAL
     </span>
+
 
     <button id="logout">
       Logout
@@ -1006,16 +1223,16 @@
   </header>
 
 
-  <!-- =========================================
+  <!-- =====================================
        MAIN
-       ========================================= -->
+  ===================================== -->
 
   <main class="admin-wrap">
 
 
-    <!-- =======================================
+    <!-- ===================================
          LOGIN
-         ======================================= -->
+    =================================== -->
 
     <section
       id="loginCard"
@@ -1026,22 +1243,28 @@
         🤝
       </div>
 
+
       <span class="login-badge">
         🔐 SECURE ADMIN PORTAL
       </span>
+
 
       <h1>
         Welcome back
       </h1>
 
+
       <p class="muted">
-        Sign in to manage and respond to submitted concerns.
+        Sign in to manage and respond
+        to submitted concerns.
       </p>
 
 
       <form id="loginForm">
 
+
         <label>
+
           Username
 
           <div class="input-box">
@@ -1058,10 +1281,12 @@
             >
 
           </div>
+
         </label>
 
 
         <label>
+
           Password
 
           <div class="input-box">
@@ -1089,19 +1314,21 @@
             </button>
 
           </div>
+
         </label>
 
 
         <button
-          id="loginButton"
           type="submit"
           class="admin-login-btn"
+          id="loginButton"
         >
           Login to Dashboard →
         </button>
 
 
         <div id="loginMsg"></div>
+
 
       </form>
 
@@ -1116,14 +1343,15 @@
     </section>
 
 
-    <!-- =======================================
+    <!-- ===================================
          DASHBOARD
-         ======================================= -->
+    =================================== -->
 
     <section
       id="dashboard"
       style="display:none;"
     >
+
 
       <div class="dashboard-head">
 
@@ -1149,6 +1377,7 @@
       <!-- STATS -->
 
       <div class="stats">
+
 
         <div class="stat-card">
 
@@ -1197,12 +1426,30 @@
 
         </div>
 
+
+        <div class="stat-card">
+
+          <span
+            id="totalCount"
+            class="stat-number"
+          >
+            0
+          </span>
+
+          <span class="stat-name">
+            Total Concerns
+          </span>
+
+        </div>
+
+
       </div>
 
 
       <!-- FILTER -->
 
       <div class="filter-bar">
+
 
         <button
           class="filter-btn active"
@@ -1211,12 +1458,14 @@
           All
         </button>
 
+
         <button
           class="filter-btn"
           data-filter="new"
         >
           New
         </button>
+
 
         <button
           class="filter-btn"
@@ -1225,12 +1474,23 @@
           In Progress
         </button>
 
+
         <button
           class="filter-btn"
           data-filter="resolved"
         >
           Resolved
         </button>
+
+
+        <button
+          class="filter-btn"
+          id="refreshBtn"
+          data-filter="refresh"
+        >
+          🔄 Refresh
+        </button>
+
 
       </div>
 
@@ -1245,16 +1505,18 @@
 
       </div>
 
+
     </section>
+
 
   </main>
 
 
-  <!-- =========================================
-       JAVASCRIPT
-       ========================================= -->
-
   <script>
+
+    // ==================================================
+    // VARIABLES
+    // ==================================================
 
     let currentAdmin = null;
 
@@ -1263,9 +1525,9 @@
     let currentFilter = "all";
 
 
-    /* =========================================
-       PASSWORD TOGGLE
-       ========================================= */
+    // ==================================================
+    // PASSWORD TOGGLE
+    // ==================================================
 
     document
       .getElementById("passwordToggle")
@@ -1273,34 +1535,29 @@
         "click",
         function() {
 
-          const password =
+          const input =
             document.getElementById(
               "adminPassword"
             );
 
           if (
-            password.type === "password"
+            input.type ===
+            "password"
           ) {
 
-            password.type = "text";
+            input.type =
+              "text";
 
-            this.textContent = "🙈";
-
-            this.setAttribute(
-              "aria-label",
-              "Hide password"
-            );
+            this.textContent =
+              "🙈";
 
           } else {
 
-            password.type = "password";
+            input.type =
+              "password";
 
-            this.textContent = "👁";
-
-            this.setAttribute(
-              "aria-label",
-              "Show password"
-            );
+            this.textContent =
+              "👁";
 
           }
 
@@ -1308,33 +1565,70 @@
       );
 
 
-    /* =========================================
-       SESSION CHECK
-       ========================================= */
+    // ==================================================
+    // API HELPER
+    // ==================================================
+
+    async function api(
+      url,
+      options = {}
+    ) {
+
+      const response =
+        await fetch(
+          url,
+          {
+            credentials: "same-origin",
+            ...options
+          }
+        );
+
+
+      let data = null;
+
+
+      try {
+
+        data =
+          await response.json();
+
+      } catch {
+
+        data = {};
+
+      }
+
+
+      if (!response.ok) {
+
+        throw new Error(
+          data.error ||
+          `Server returned ${response.status}`
+        );
+
+      }
+
+
+      return data;
+
+    }
+
+
+    // ==================================================
+    // SESSION
+    // ==================================================
 
     async function loadSession() {
 
       try {
 
-        const response =
-          await fetch(
-            "/api/session",
-            {
-              method: "GET",
-              credentials: "same-origin",
-              cache: "no-store"
-            }
+        const data =
+          await api(
+            "/api/session"
           );
 
-        if (!response.ok) {
-          return;
-        }
-
-        const data =
-          await response.json();
 
         if (
-          data &&
           data.loggedIn &&
           data.admin
         ) {
@@ -1349,8 +1643,12 @@
       } catch (error) {
 
         console.error(
-          "Session check error:",
+          "Session error:",
           error
+        );
+
+        showLoginError(
+          "Server connection problem. Please make sure the Render service is running."
         );
 
       }
@@ -1358,29 +1656,175 @@
     }
 
 
-    /* =========================================
-       SHOW DASHBOARD
-       ========================================= */
+    // ==================================================
+    // LOGIN
+    // ==================================================
+
+    document
+      .getElementById("loginForm")
+      .addEventListener(
+        "submit",
+        async function(event) {
+
+          event.preventDefault();
+
+
+          const loginMsg =
+            document.getElementById(
+              "loginMsg"
+            );
+
+
+          const button =
+            document.getElementById(
+              "loginButton"
+            );
+
+
+          loginMsg.textContent =
+            "";
+
+          loginMsg.className =
+            "";
+
+
+          const formData =
+            new FormData(
+              this
+            );
+
+
+          const data = {
+            username:
+              String(
+                formData.get(
+                  "username"
+                ) || ""
+              ).trim(),
+
+            password:
+              String(
+                formData.get(
+                  "password"
+                ) || ""
+              )
+          };
+
+
+          button.disabled =
+            true;
+
+          button.textContent =
+            "Checking login...";
+
+
+          try {
+
+            const result =
+              await api(
+                "/api/login",
+                {
+                  method: "POST",
+
+                  headers: {
+                    "Content-Type":
+                      "application/json"
+                  },
+
+                  body:
+                    JSON.stringify(
+                      data
+                    )
+                }
+              );
+
+
+            currentAdmin =
+              result.admin;
+
+
+            this.reset();
+
+
+            showDashboard();
+
+
+          } catch (error) {
+
+            console.error(
+              "Login error:",
+              error
+            );
+
+
+            loginMsg.className =
+              "error";
+
+
+            loginMsg.textContent =
+              error.message ||
+              "Unable to login.";
+
+
+          } finally {
+
+            button.disabled =
+              false;
+
+            button.textContent =
+              "Login to Dashboard →";
+
+          }
+
+        }
+      );
+
+
+    // ==================================================
+    // SHOW LOGIN ERROR
+    // ==================================================
+
+    function showLoginError(
+      message
+    ) {
+
+      const msg =
+        document.getElementById(
+          "loginMsg"
+        );
+
+
+      msg.className =
+        "error";
+
+      msg.textContent =
+        message;
+
+    }
+
+
+    // ==================================================
+    // SHOW DASHBOARD
+    // ==================================================
 
     function showDashboard() {
 
       document.getElementById(
         "loginCard"
-      ).style.display = "none";
+      ).style.display =
+        "none";
+
 
       document.getElementById(
         "dashboard"
-      ).style.display = "block";
+      ).style.display =
+        "block";
+
 
       document.getElementById(
         "logout"
-      ).style.display = "block";
-
-
-      const roleName =
-        getRoleName(
-          currentAdmin.role
-        );
+      ).style.display =
+        "block";
 
 
       document.getElementById(
@@ -1389,7 +1833,9 @@
         "Logged in as " +
         currentAdmin.username +
         " • " +
-        roleName;
+        getRoleName(
+          currentAdmin.role
+        );
 
 
       refresh();
@@ -1397,11 +1843,13 @@
     }
 
 
-    /* =========================================
-       ROLE NAME
-       ========================================= */
+    // ==================================================
+    // ROLE NAME
+    // ==================================================
 
-    function getRoleName(role) {
+    function getRoleName(
+      role
+    ) {
 
       const names = {
 
@@ -1419,251 +1867,18 @@
 
       };
 
+
       return (
         names[role] ||
-        role ||
-        "Administrator"
+        role
       );
 
     }
 
 
-    /* =========================================
-       LOGIN
-       ========================================= */
-
-    document
-      .getElementById("loginForm")
-      .addEventListener(
-        "submit",
-        async function(event) {
-
-          event.preventDefault();
-
-
-          const form =
-            this;
-
-          const loginMsg =
-            document.getElementById(
-              "loginMsg"
-            );
-
-          const loginButton =
-            document.getElementById(
-              "loginButton"
-            );
-
-
-          loginMsg.textContent =
-            "";
-
-          loginMsg.className =
-            "";
-
-
-          const data =
-            Object.fromEntries(
-              new FormData(form)
-            );
-
-
-          if (
-            !data.username ||
-            !data.password
-          ) {
-
-            loginMsg.className =
-              "error";
-
-            loginMsg.textContent =
-              "Please enter username and password.";
-
-            return;
-
-          }
-
-
-          loginButton.disabled =
-            true;
-
-          loginButton.textContent =
-            "Signing in...";
-
-
-          try {
-
-            console.log(
-              "Sending login request..."
-            );
-
-
-            const response =
-              await fetch(
-                "/api/login",
-                {
-                  method: "POST",
-
-                  credentials:
-                    "same-origin",
-
-                  headers: {
-                    "Content-Type":
-                      "application/json",
-
-                    "Accept":
-                      "application/json"
-                  },
-
-                  body:
-                    JSON.stringify(data)
-                }
-              );
-
-
-            console.log(
-              "Login HTTP status:",
-              response.status
-            );
-
-
-            /*
-              Read text first.
-
-              This prevents JSON parsing
-              from causing the generic
-              "Unable to connect" error
-              if Render returns something
-              unexpected.
-            */
-
-            const responseText =
-              await response.text();
-
-
-            console.log(
-              "Login response:",
-              responseText
-            );
-
-
-            let result = {};
-
-            try {
-
-              result =
-                responseText
-                  ? JSON.parse(
-                      responseText
-                    )
-                  : {};
-
-            } catch (jsonError) {
-
-              console.error(
-                "Invalid JSON response:",
-                jsonError
-              );
-
-              loginMsg.className =
-                "error";
-
-              loginMsg.textContent =
-                "Server returned an invalid response.";
-
-              return;
-
-            }
-
-
-            /* =========================
-               LOGIN FAILED
-               ========================= */
-
-            if (
-              !response.ok
-            ) {
-
-              loginMsg.className =
-                "error";
-
-              loginMsg.textContent =
-                result.error ||
-                "Invalid username or password.";
-
-              return;
-
-            }
-
-
-            /* =========================
-               LOGIN SUCCESS
-               ========================= */
-
-            if (
-              !result.ok ||
-              !result.admin
-            ) {
-
-              loginMsg.className =
-                "error";
-
-              loginMsg.textContent =
-                result.error ||
-                "Login was not completed.";
-
-              return;
-
-            }
-
-
-            console.log(
-              "Login successful:",
-              result.admin
-            );
-
-
-            currentAdmin =
-              result.admin;
-
-
-            form.reset();
-
-
-            showDashboard();
-
-
-          } catch (error) {
-
-            console.error(
-              "LOGIN REQUEST ERROR:",
-              error
-            );
-
-
-            loginMsg.className =
-              "error";
-
-            loginMsg.textContent =
-              "Login request failed. Please refresh the page and try again.";
-
-          } finally {
-
-            loginButton.disabled =
-              false;
-
-            loginButton.textContent =
-              "Login to Dashboard →";
-
-          }
-
-        }
-      );
-
-
-    /* =========================================
-       LOGOUT
-       ========================================= */
+    // ==================================================
+    // LOGOUT
+    // ==================================================
 
     document
       .getElementById("logout")
@@ -1671,26 +1886,12 @@
         "click",
         async function() {
 
-          this.disabled = true;
-
-          this.textContent =
-            "Logging out...";
-
-
           try {
 
-            await fetch(
+            await api(
               "/api/logout",
               {
-                method: "POST",
-
-                credentials:
-                  "same-origin",
-
-                headers: {
-                  "Accept":
-                    "application/json"
-                }
+                method: "POST"
               }
             );
 
@@ -1703,8 +1904,7 @@
 
           } finally {
 
-            window.location.href =
-              "/admin";
+            location.reload();
 
           }
 
@@ -1712,33 +1912,42 @@
       );
 
 
-    /* =========================================
-       FILTER BUTTONS
-       ========================================= */
+    // ==================================================
+    // FILTERS
+    // ==================================================
 
     document
       .querySelectorAll(
         ".filter-btn"
       )
       .forEach(
-        function(button) {
+        button => {
 
           button.addEventListener(
             "click",
             function() {
+
+              if (
+                this.dataset.filter ===
+                "refresh"
+              ) {
+
+                refresh();
+
+                return;
+
+              }
+
 
               document
                 .querySelectorAll(
                   ".filter-btn"
                 )
                 .forEach(
-                  function(btn) {
-
+                  btn =>
                     btn.classList.remove(
                       "active"
-                    );
-
-                  }
+                    )
                 );
 
 
@@ -1760,9 +1969,9 @@
       );
 
 
-    /* =========================================
-       REFRESH DASHBOARD
-       ========================================= */
+    // ==================================================
+    // REFRESH
+    // ==================================================
 
     async function refresh() {
 
@@ -1782,155 +1991,34 @@
       try {
 
         const [
-          problemsResponse,
-          statsResponse
+          problems,
+          stats
         ] = await Promise.all([
 
-          fetch(
-            "/api/problems",
-            {
-              credentials:
-                "same-origin",
-              cache: "no-store"
-            }
+          api(
+            "/api/problems"
           ),
 
-          fetch(
-            "/api/stats",
-            {
-              credentials:
-                "same-origin",
-              cache: "no-store"
-            }
+          api(
+            "/api/stats"
           )
 
         ]);
 
 
-        /* =========================
-           AUTH SESSION EXPIRED
-           ========================= */
-
-        if (
-          problemsResponse.status === 401 ||
-          statsResponse.status === 401
-        ) {
-
-          currentAdmin = null;
-
-          document.getElementById(
-            "dashboard"
-          ).style.display = "none";
-
-          document.getElementById(
-            "loginCard"
-          ).style.display = "block";
-
-          document.getElementById(
-            "logout"
-          ).style.display = "none";
-
-          return;
-
-        }
-
-
-        /* =========================
-           PROBLEMS RESPONSE
-           ========================= */
-
-        const problemsText =
-          await problemsResponse.text();
-
-
-        let problemsData = [];
-
-        try {
-
-          problemsData =
-            problemsText
-              ? JSON.parse(
-                  problemsText
-                )
-              : [];
-
-        } catch {
-
-          problemsData = [];
-
-        }
-
-
-        if (
-          !problemsResponse.ok
-        ) {
-
-          throw new Error(
-            problemsData.error ||
-            "Unable to load problems."
-          );
-
-        }
-
-
-        if (
+        allProblems =
           Array.isArray(
-            problemsData
+            problems
           )
-        ) {
-
-          allProblems =
-            problemsData;
-
-        } else {
-
-          allProblems =
-            problemsData.problems ||
-            [];
-
-        }
-
-
-        /* =========================
-           STATS RESPONSE
-           ========================= */
-
-        const statsText =
-          await statsResponse.text();
-
-
-        let statsData = {};
-
-        try {
-
-          statsData =
-            statsText
-              ? JSON.parse(
-                  statsText
-                )
-              : {};
-
-        } catch {
-
-          statsData = {};
-
-        }
-
-
-        if (
-          !statsResponse.ok
-        ) {
-
-          throw new Error(
-            statsData.error ||
-            "Unable to load statistics."
-          );
-
-        }
+            ? problems
+            : (
+                problems.problems ||
+                []
+              );
 
 
         updateStats(
-          statsData
+          stats
         );
 
 
@@ -1959,18 +2047,9 @@
 
             <p>
               ${escapeHtml(
-                error.message ||
-                "Please refresh the page and try again."
+                error.message
               )}
             </p>
-
-            <button
-              class="save-btn"
-              onclick="refresh()"
-              style="margin-top:15px;"
-            >
-              Try Again
-            </button>
 
           </div>
 
@@ -1981,55 +2060,43 @@
     }
 
 
-    /* =========================================
-       UPDATE STATISTICS
-       ========================================= */
+    // ==================================================
+    // STATS
+    // ==================================================
 
-    function updateStats(data) {
-
-      const newCount =
-        data.new ??
-        data.newCount ??
-        data.pending ??
-        0;
-
-
-      const progressCount =
-        data.in_progress ??
-        data.inProgress ??
-        data.progressCount ??
-        0;
-
-
-      const resolvedCount =
-        data.resolved ??
-        data.resolvedCount ??
-        0;
-
+    function updateStats(
+      data
+    ) {
 
       document.getElementById(
         "newCount"
       ).textContent =
-        newCount;
+        data.new || 0;
 
 
       document.getElementById(
         "progressCount"
       ).textContent =
-        progressCount;
+        data.in_progress || 0;
 
 
       document.getElementById(
         "resolvedCount"
       ).textContent =
-        resolvedCount;
+        data.resolved || 0;
+
+
+      document.getElementById(
+        "totalCount"
+      ).textContent =
+        data.total || 0;
 
     }
 
 
-    /* =========================================
-       RENDER PROBLEMS
-       ========================================= */
+    // ==================================================
+    // RENDER PROBLEMS
+    // ==================================================
 
     function renderProblems() {
 
@@ -2044,26 +2111,22 @@
 
 
       if (
-        currentFilter !== "all"
+        currentFilter !==
+        "all"
       ) {
 
         problems =
           problems.filter(
-            function(problem) {
-
-              return (
-                problem.status ===
-                currentFilter
-              );
-
-            }
+            problem =>
+              problem.status ===
+              currentFilter
           );
 
       }
 
 
       if (
-        problems.length === 0
+        !problems.length
       ) {
 
         container.innerHTML = `
@@ -2101,9 +2164,9 @@
     }
 
 
-    /* =========================================
-       CREATE PROBLEM CARD
-       ========================================= */
+    // ==================================================
+    // CREATE PROBLEM CARD
+    // ==================================================
 
     function createProblemCard(
       problem
@@ -2135,26 +2198,6 @@
         "new";
 
 
-      const urgency =
-        problem.urgency ||
-        "normal";
-
-
-      const statusText = {
-
-        new:
-          "New",
-
-        in_progress:
-          "In Progress",
-
-        resolved:
-          "Resolved"
-
-      }[status] ||
-      status;
-
-
       const name =
         problem.anonymous
           ? "Anonymous"
@@ -2171,6 +2214,11 @@
               problem.phone ||
               "Not provided"
             );
+
+
+      const urgency =
+        problem.urgency ||
+        "normal";
 
 
       const created =
@@ -2206,24 +2254,30 @@
 
         <article
           class="problem-card"
-          data-id="${problem.id}"
         >
 
           <div class="problem-top">
 
             <div>
 
-              <h3 class="problem-title">
+              <h3
+                class="problem-title"
+              >
                 ${title}
               </h3>
 
-              <div class="problem-id">
+              <div
+                class="problem-id"
+              >
                 Reference #${problem.id}
               </div>
 
             </div>
 
-            <span class="portal-tag">
+
+            <span
+              class="portal-tag"
+            >
               ${portalName}
             </span>
 
@@ -2232,41 +2286,68 @@
 
           <div class="problem-meta">
 
-            <span class="meta-item">
-              👤 ${escapeHtml(name)}
+            <span
+              class="meta-item"
+            >
+              👤
+              ${escapeHtml(
+                name
+              )}
             </span>
 
-            <span class="meta-item">
-              📱 ${escapeHtml(phone)}
-            </span>
-
-            <span class="meta-item">
-              🕒 ${created}
-            </span>
 
             <span
-              class="meta-item ${
-                urgency === "urgent"
-                  ? "urgent"
-                  : ""
-              }"
+              class="meta-item"
             >
+              📱
+              ${escapeHtml(
+                phone
+              )}
+            </span>
+
+
+            <span
+              class="meta-item"
+            >
+              🕒
+              ${created}
+            </span>
+
+
+            <span
+              class="
+                meta-item
+                ${
+                  urgency ===
+                  "urgent"
+                    ? "urgent"
+                    : ""
+                }
+              "
+            >
+
               ${
-                urgency === "urgent"
+                urgency ===
+                "urgent"
                   ? "🚨 URGENT"
                   : "Normal"
               }
+
             </span>
 
           </div>
 
 
-          <div class="problem-description">
+          <div
+            class="problem-description"
+          >
             ${description}
           </div>
 
 
-          <div class="problem-actions">
+          <div
+            class="problem-actions"
+          >
 
             <select
               class="status-select"
@@ -2276,7 +2357,8 @@
               <option
                 value="new"
                 ${
-                  status === "new"
+                  status ===
+                  "new"
                     ? "selected"
                     : ""
                 }
@@ -2284,10 +2366,12 @@
                 New
               </option>
 
+
               <option
                 value="in_progress"
                 ${
-                  status === "in_progress"
+                  status ===
+                  "in_progress"
                     ? "selected"
                     : ""
                 }
@@ -2295,10 +2379,12 @@
                 In Progress
               </option>
 
+
               <option
                 value="resolved"
                 ${
-                  status === "resolved"
+                  status ===
+                  "resolved"
                     ? "selected"
                     : ""
                 }
@@ -2333,136 +2419,60 @@
     }
 
 
-    /* =========================================
-       SAVE PROBLEM
-       ========================================= */
+    // ==================================================
+    // SAVE PROBLEM
+    // ==================================================
 
     async function saveProblem(
       id
     ) {
 
-      const statusElement =
+      const status =
         document.getElementById(
           "status-" + id
-        );
+        ).value;
 
 
-      const noteElement =
+      const adminNote =
         document.getElementById(
           "note-" + id
-        );
-
-
-      if (
-        !statusElement ||
-        !noteElement
-      ) {
-
-        return;
-
-      }
-
-
-      const status =
-        statusElement.value;
-
-
-      const admin_note =
-        noteElement.value;
-
-
-      const card =
-        document.querySelector(
-          `.problem-card[data-id="${id}"]`
-        );
-
-
-      const saveButton =
-        card
-          ? card.querySelector(
-              ".save-btn"
-            )
-          : null;
-
-
-      if (saveButton) {
-
-        saveButton.disabled =
-          true;
-
-        saveButton.textContent =
-          "Saving...";
-
-      }
+        ).value;
 
 
       try {
 
-        const response =
-          await fetch(
-            "/api/problems/" + id,
-            {
-              method: "PATCH",
+        await api(
+          "/api/problems/" + id,
+          {
+            method: "PATCH",
 
-              credentials:
-                "same-origin",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
 
-              headers: {
-                "Content-Type":
-                  "application/json",
-
-                "Accept":
-                  "application/json"
-              },
-
-              body:
-                JSON.stringify({
-                  status,
-                  admin_note
-                })
-            }
-          );
-
-
-        const text =
-          await response.text();
-
-
-        let result = {};
-
-        try {
-
-          result =
-            text
-              ? JSON.parse(text)
-              : {};
-
-        } catch {
-
-          result = {};
-
-        }
-
-
-        if (
-          !response.ok
-        ) {
-
-          throw new Error(
-            result.error ||
-            "Unable to update concern."
-          );
-
-        }
+            body:
+              JSON.stringify({
+                status,
+                admin_note:
+                  adminNote
+              })
+          }
+        );
 
 
         await refresh();
 
 
+        alert(
+          "Concern updated successfully."
+        );
+
+
       } catch (error) {
 
         console.error(
-          "Save problem error:",
+          "Save error:",
           error
         );
 
@@ -2472,27 +2482,14 @@
           "Unable to update concern."
         );
 
-
-      } finally {
-
-        if (saveButton) {
-
-          saveButton.disabled =
-            false;
-
-          saveButton.textContent =
-            "Save Changes";
-
-        }
-
       }
 
     }
 
 
-    /* =========================================
-       DATE FORMAT
-       ========================================= */
+    // ==================================================
+    // DATE
+    // ==================================================
 
     function formatDate(
       value
@@ -2500,26 +2497,16 @@
 
       try {
 
-        const date =
-          new Date(value);
-
-
-        if (
-          Number.isNaN(
-            date.getTime()
-          )
-        ) {
-
-          return value;
-
-        }
-
-
-        return date.toLocaleString(
+        return new Date(
+          value
+        ).toLocaleString(
           "en-IN",
           {
-            dateStyle: "medium",
-            timeStyle: "short"
+            dateStyle:
+              "medium",
+
+            timeStyle:
+              "short"
           }
         );
 
@@ -2532,15 +2519,17 @@
     }
 
 
-    /* =========================================
-       HTML ESCAPE
-       ========================================= */
+    // ==================================================
+    // ESCAPE HTML
+    // ==================================================
 
     function escapeHtml(
       value
     ) {
 
-      return String(value)
+      return String(
+        value
+      )
         .replace(
           /&/g,
           "&amp;"
@@ -2565,13 +2554,14 @@
     }
 
 
-    /* =========================================
-       START
-       ========================================= */
+    // ==================================================
+    // START
+    // ==================================================
 
     loadSession();
 
   </script>
 
 </body>
+
 </html>
