@@ -1,20 +1,19 @@
 {
   "name": "seva-swasthya",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Seva Swasthya - three portal problem reporting and admin dashboard",
+  "version": "2.0.0",
+  "description": "Seva Swasthya support portal",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "node --watch server.js"
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^11.8.1",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "helmet": "^8.0.0",
-    "twilio": "^5.4.5"
+    "helmet": "^8.0.0"
   }
 }
