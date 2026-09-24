@@ -794,3 +794,865 @@ footer .copyright {
 .portal {
   animation: fadeUp 0.7s ease;
 }
+/* =========================================
+   SUBMIT CONCERN PAGE
+   ========================================= */
+
+.topbar {
+  width: 92%;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  min-height: 80px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 18px 0;
+}
+
+.topbar a {
+  text-decoration: none;
+
+  display: inline-flex;
+  align-items: center;
+
+  padding: 11px 17px;
+
+  border-radius: 12px;
+
+  background: rgba(255, 255, 255, 0.85);
+
+  color: #3c6175;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  border: 1px solid #e1ebf2;
+
+  box-shadow: 0 7px 20px rgba(50, 90, 120, 0.08);
+
+  transition: 0.25s ease;
+}
+
+.topbar a:hover {
+  transform: translateX(-3px);
+  background: white;
+  box-shadow: 0 10px 25px rgba(50, 90, 120, 0.13);
+}
+
+.topbar strong {
+  color: #28657e;
+
+  font-size: 17px;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* =========================================
+   FORM PAGE BACKGROUND
+   ========================================= */
+
+.form-wrap {
+  width: 92%;
+  max-width: 760px;
+
+  margin: 25px auto 80px;
+
+  position: relative;
+}
+
+.form-wrap::before {
+  content: "";
+
+  position: fixed;
+
+  width: 300px;
+  height: 300px;
+
+  border-radius: 50%;
+
+  background: rgba(92, 211, 238, 0.13);
+
+  left: -130px;
+  top: 220px;
+
+  z-index: -1;
+}
+
+.form-wrap::after {
+  content: "";
+
+  position: fixed;
+
+  width: 330px;
+  height: 330px;
+
+  border-radius: 50%;
+
+  background: rgba(142, 111, 239, 0.11);
+
+  right: -150px;
+  bottom: 80px;
+
+  z-index: -1;
+}
+
+
+/* =========================================
+   FORM CARD
+   ========================================= */
+
+.form-wrap .card {
+  background: rgba(255, 255, 255, 0.92);
+
+  border: 1px solid rgba(255, 255, 255, 0.95);
+
+  border-radius: 30px;
+
+  padding: 40px;
+
+  box-shadow:
+    0 20px 55px rgba(50, 85, 115, 0.12);
+
+  backdrop-filter: blur(12px);
+
+  animation: submitCardIn 0.55s ease;
+}
+
+
+@keyframes submitCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================
+   FORM HEADING
+   ========================================= */
+
+.form-wrap .card h1 {
+  color: #263852;
+
+  font-size: 34px;
+
+  line-height: 1.2;
+
+  margin-bottom: 10px;
+}
+
+
+.form-wrap .muted {
+  color: #77879a;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  margin-bottom: 28px;
+}
+
+
+/* =========================================
+   FORM LABELS
+   ========================================= */
+
+.form-wrap .card > label,
+#identity label {
+  display: block;
+
+  color: #344b61;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  margin-top: 20px;
+}
+
+
+/* =========================================
+   INPUTS
+   ========================================= */
+
+.form-wrap input:not([type="checkbox"]),
+.form-wrap textarea,
+.form-wrap select {
+  width: 100%;
+
+  display: block;
+
+  margin-top: 8px;
+
+  padding: 14px 15px;
+
+  border-radius: 13px;
+
+  border: 1px solid #dce6ee;
+
+  background: #fafdff;
+
+  color: #263852;
+
+  font-family: inherit;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: all 0.22s ease;
+}
+
+
+.form-wrap input:not([type="checkbox"]):focus,
+.form-wrap textarea:focus,
+.form-wrap select:focus {
+  border-color: #57b8d5;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(87, 184, 213, 0.13);
+
+  transform: translateY(-1px);
+}
+
+
+.form-wrap textarea {
+  min-height: 155px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   ANONYMOUS CHECKBOX
+   ========================================= */
+
+#problemForm > label:first-of-type {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 14px 16px;
+
+  border-radius: 14px;
+
+  background: #f2f9fc;
+
+  border: 1px solid #e1eef4;
+
+  color: #416175;
+
+  cursor: pointer;
+
+  margin-bottom: 8px;
+}
+
+
+#anonymous {
+  width: 18px;
+  height: 18px;
+
+  accent-color: #238fb2;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   IDENTITY AREA
+   ========================================= */
+
+#identity {
+  padding: 5px 0;
+}
+
+
+/* =========================================
+   SELECT
+   ========================================= */
+
+.form-wrap select {
+  cursor: pointer;
+
+  appearance: auto;
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+   ========================================= */
+
+.form-wrap button[type="submit"] {
+  width: 100%;
+
+  margin-top: 28px;
+
+  padding: 16px 22px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #159fc8,
+      #6870e6
+    );
+
+  color: white;
+
+  font-family: inherit;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.2px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 28px rgba(76, 113, 215, 0.25);
+
+  transition: all 0.25s ease;
+}
+
+
+.form-wrap button[type="submit"]:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 17px 34px rgba(76, 113, 215, 0.32);
+}
+
+
+.form-wrap button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   SUCCESS / ERROR
+   ========================================= */
+
+.form-wrap .success {
+  margin-top: 20px;
+
+  padding: 16px 18px;
+
+  border-radius: 14px;
+
+  background: #eafff5;
+
+  border: 1px solid #b9efd7;
+
+  color: #087443;
+
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  animation: submitCardIn 0.35s ease;
+}
+/* =========================================
+   SUBMIT CONCERN / INSIDE PORTAL PAGE
+   ========================================= */
+
+/* Top navigation */
+
+.topbar {
+  width: 92%;
+  max-width: 1100px;
+  min-height: 82px;
+
+  margin: 0 auto;
+  padding: 18px 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.topbar a {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 11px 18px;
+
+  text-decoration: none;
+
+  color: #315d72;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  border: 1px solid #e2edf3;
+  border-radius: 13px;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  box-shadow: 0 7px 22px rgba(45, 85, 110, 0.09);
+
+  transition: 0.25s ease;
+}
+
+.topbar a:hover {
+  transform: translateX(-3px);
+
+  background: #ffffff;
+
+  box-shadow: 0 11px 28px rgba(45, 85, 110, 0.14);
+}
+
+.topbar strong {
+  color: #28657e;
+
+  font-size: 18px;
+  font-weight: 800;
+}
+
+
+/* =========================================
+   FORM PAGE
+   ========================================= */
+
+.form-wrap {
+  width: 92%;
+  max-width: 760px;
+
+  margin: 25px auto 80px;
+
+  position: relative;
+}
+
+
+/* Decorative background */
+
+.form-wrap::before {
+  content: "";
+
+  position: fixed;
+
+  width: 330px;
+  height: 330px;
+
+  border-radius: 50%;
+
+  background: rgba(83, 210, 240, 0.12);
+
+  left: -150px;
+  top: 250px;
+
+  z-index: -1;
+}
+
+.form-wrap::after {
+  content: "";
+
+  position: fixed;
+
+  width: 350px;
+  height: 350px;
+
+  border-radius: 50%;
+
+  background: rgba(145, 113, 245, 0.10);
+
+  right: -160px;
+  bottom: 40px;
+
+  z-index: -1;
+}
+
+
+/* =========================================
+   FORM CARD
+   ========================================= */
+
+.form-wrap .card {
+  width: 100%;
+
+  padding: 40px;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  border: 1px solid rgba(255, 255, 255, 0.95);
+
+  border-radius: 30px;
+
+  box-shadow:
+    0 20px 55px rgba(45, 85, 110, 0.13);
+
+  backdrop-filter: blur(12px);
+
+  animation: portalFormAppear 0.55s ease;
+}
+
+
+@keyframes portalFormAppear {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================
+   FORM HEADING
+   ========================================= */
+
+.form-wrap .card h1 {
+  color: #263852;
+
+  font-size: 34px;
+
+  line-height: 1.2;
+
+  margin-bottom: 10px;
+}
+
+
+.form-wrap .muted {
+  color: #748397;
+
+  font-size: 14px;
+
+  line-height: 1.6;
+
+  margin-bottom: 27px;
+}
+
+
+/* =========================================
+   FORM LABELS
+   ========================================= */
+
+.form-wrap .card > label,
+#identity label {
+  display: block;
+
+  color: #344b61;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  margin-top: 20px;
+}
+
+
+/* =========================================
+   INPUTS
+   ========================================= */
+
+.form-wrap input:not([type="checkbox"]),
+.form-wrap textarea,
+.form-wrap select {
+  width: 100%;
+
+  display: block;
+
+  margin-top: 8px;
+
+  padding: 14px 15px;
+
+  border: 1px solid #dce6ee;
+
+  border-radius: 13px;
+
+  background: #fbfdff;
+
+  color: #263852;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: 0.22s ease;
+}
+
+
+.form-wrap input:not([type="checkbox"]):hover,
+.form-wrap textarea:hover,
+.form-wrap select:hover {
+  border-color: #c6d9e4;
+}
+
+
+.form-wrap input:not([type="checkbox"]):focus,
+.form-wrap textarea:focus,
+.form-wrap select:focus {
+  border-color: #50b6d5;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 4px rgba(80, 182, 213, 0.13);
+
+  transform: translateY(-1px);
+}
+
+
+.form-wrap textarea {
+  min-height: 155px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   ANONYMOUS OPTION
+   ========================================= */
+
+#problemForm > label:first-of-type {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 15px 16px;
+
+  margin-top: 5px;
+
+  margin-bottom: 8px;
+
+  border-radius: 14px;
+
+  background: #f2f9fc;
+
+  border: 1px solid #dfedf3;
+
+  color: #416175;
+
+  cursor: pointer;
+}
+
+
+#anonymous {
+  width: 18px;
+  height: 18px;
+
+  margin: 0;
+
+  accent-color: #2498bb;
+
+  cursor: pointer;
+}
+
+
+/* =========================================
+   IDENTITY SECTION
+   ========================================= */
+
+#identity {
+  padding-top: 2px;
+}
+
+
+/* =========================================
+   URGENCY
+   ========================================= */
+
+.form-wrap select {
+  cursor: pointer;
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+   ========================================= */
+
+.form-wrap button[type="submit"] {
+  width: 100%;
+
+  margin-top: 28px;
+
+  padding: 16px 22px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #159fc8,
+      #6870e6
+    );
+
+  color: #ffffff;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 16px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 28px rgba(76, 113, 215, 0.25);
+
+  transition: 0.25s ease;
+}
+
+
+.form-wrap button[type="submit"]:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 17px 35px rgba(76, 113, 215, 0.32);
+}
+
+
+.form-wrap button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+
+/* =========================================
+   SUCCESS MESSAGE
+   ========================================= */
+
+.form-wrap .success {
+  margin-top: 20px;
+
+  padding: 16px 18px;
+
+  border-radius: 14px;
+
+  background: #eafff5;
+
+  border: 1px solid #b9efd7;
+
+  color: #087443;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  animation: portalFormAppear 0.35s ease;
+}
+
+
+/* =========================================
+   ERROR MESSAGE
+   ========================================= */
+
+.form-wrap .error {
+  margin-top: 20px;
+
+  padding: 16px 18px;
+
+  border-radius: 14px;
+
+  background: #fff1f2;
+
+  border: 1px solid #ffd0d5;
+
+  color: #b42318;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  line-height: 1.5;
+
+  animation: portalFormAppear 0.35s ease;
+}
+
+
+/* =========================================
+   MOBILE FORM
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .topbar {
+    width: 90%;
+
+    min-height: 70px;
+
+    padding: 15px 0;
+  }
+
+  .topbar a {
+    padding: 9px 13px;
+
+    font-size: 12px;
+  }
+
+  .topbar strong {
+    font-size: 14px;
+
+    max-width: 160px;
+
+    text-align: right;
+  }
+
+
+  .form-wrap {
+    width: 92%;
+
+    margin-top: 15px;
+  }
+
+
+  .form-wrap .card {
+    padding: 27px 20px;
+
+    border-radius: 24px;
+  }
+
+
+  .form-wrap .card h1 {
+    font-size: 27px;
+  }
+
+
+  .form-wrap .muted {
+    font-size: 13px;
+  }
+
+
+  .form-wrap input:not([type="checkbox"]),
+  .form-wrap textarea,
+  .form-wrap select {
+    font-size: 16px;
+
+    padding: 14px;
+  }
+
+
+  .form-wrap button[type="submit"] {
+    padding: 15px;
+  }
+}
