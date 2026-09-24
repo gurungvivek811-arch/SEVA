@@ -4,145 +4,234 @@ const express = require("express");
 const session = require("express-session");
 const helmet = require("helmet");
 const bcrypt = require("bcryptjs");
-const Database = require("better-sqlite3");
+const fs = require("fs");
 const path = require("path");
 
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
-// =========================
-// DATABASE
-// =========================
-const dbPath = path.join(__dirname, "seva-swasthya.db");
-const db = new Database(dbPath);
+const DATA_DIR = path.join(__dirname, "data");
+const DB_FILE = path.join(DATA_DIR, "database.json");
 
-// Do not use WAL for now; keep SQLite setup simple on Render.
 
-// =========================
-// APP CONFIG
-// =========================
-app.set("trust proxy", 1);
+// ======================================================
+// CREATE DATA FOLDER / DATABASE
+// ======================================================
 
-app.use(helmet({
-  contentSecurityPolicy: false
-}));
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+}
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+if (!fs.existsSync(DB_FILE)) {
+  fs.writeFileSync(
+    DB_FILE,
+    JSON.stringify(
+      {
+        admins: [],
+        problems: [],
+        nextAdminId: 1,
+        nextProblemId: 1
+      },
+      null,
+      2
+    )
+  );
+}
 
-// =========================
-// SESSION
-// =========================
-app.use(session({
-  secret: process.env.SESSION_SECRET || "dev-secret-change-me",
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    maxAge: 1000 * 60 * 60 * 8
-  }
-}));
 
-// =========================
-// STATIC FILES
-// =========================
-app.use(express.static(path.join(__dirname, "public")));
+// ======================================================
+// DATABASE FUNCTIONS
+// ======================================================
 
-// =========================
-// DATABASE TABLES
-// =========================
-db.exec(`
-CREATE TABLE IF NOT EXISTS admins (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL,
-  role TEXT NOT NULL CHECK(role IN ('mental','physical','financial','super')),
-  phone TEXT
-);
+function readDatabase() {
+  try {
+    const raw = fs.readFileSync(DB_FILE, "utf8");
 
-CREATE TABLE IF NOT EXISTS problems (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  portal TEXT NOT NULL CHECK(portal IN ('mental','physical','financial')),
-  name TEXT,
-  phone TEXT,
-  anonymous INTEGER NOT NULL DEFAULT 0,
-  urgency TEXT NOT NULL DEFAULT 'normal',
-  title TEXT NOT NULL,
-  description TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'new',
-  admin_note TEXT,
-  created_at TEXT NOT NULL DEFAULT (datetime('now'))
-);
-`);
+    const data = JSON.parse(raw);
 
-// =========================
-// CREATE DEFAULT ADMINS
-// =========================
-function seedAdmin(username, password, role, phone) {
-  const existing = db
-    .prepare("SELECT id FROM admins WHERE username = ?")
-    .get(username);
+    return {
+      admins: Array.isArray(data.admins) ? data.admins : [],
+      problems: Array.isArray(data.problems) ? data.problems : [],
+      nextAdminId: Number(data.nextAdminId) || 1,
+      nextProblemId: Number(data.nextProblemId) || 1
+    };
+  } catch (error) {
+    console.error("Database read error:", error);
 
-  if (!existing) {
-    const hash = bcrypt.hashSync(password, 12);
-
-    db.prepare(`
-      INSERT INTO admins
-      (username, password_hash, role, phone)
-      VALUES (?, ?, ?, ?)
-    `).run(
-      username,
-      hash,
-      role,
-      phone || ""
-    );
-
-    console.log(`Created admin: ${username}`);
+    return {
+      admins: [],
+      problems: [],
+      nextAdminId: 1,
+      nextProblemId: 1
+    };
   }
 }
 
-seedAdmin(
-  "mental_admin",
-  process.env.MENTAL_ADMIN_PASSWORD || "mental123",
-  "mental",
-  process.env.MENTAL_ADMIN_PHONE
+
+function writeDatabase(data) {
+  try {
+    fs.writeFileSync(
+      DB_FILE,
+      JSON.stringify(data, null, 2),
+      "utf8"
+    );
+
+    return true;
+  } catch (error) {
+    console.error("Database write error:", error);
+    return false;
+  }
+}
+
+
+// ======================================================
+// APP CONFIGURATION
+// ======================================================
+
+app.set("trust proxy", 1);
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false
+  })
 );
 
-seedAdmin(
-  "physical_admin",
-  process.env.PHYSICAL_ADMIN_PASSWORD || "physical123",
-  "physical",
-  process.env.PHYSICAL_ADMIN_PHONE
+app.use(express.json({ limit: "1mb" }));
+
+app.use(
+  express.urlencoded({
+    extended: true
+  })
 );
 
-seedAdmin(
-  "financial_admin",
-  process.env.FINANCIAL_ADMIN_PASSWORD || "financial123",
-  "financial",
-  process.env.FINANCIAL_ADMIN_PHONE
+
+// ======================================================
+// SESSION
+// ======================================================
+
+app.use(
+  session({
+    secret:
+      process.env.SESSION_SECRET ||
+      "seva-swasthya-change-this-secret",
+
+    resave: false,
+
+    saveUninitialized: false,
+
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+
+      secure:
+        process.env.NODE_ENV === "production",
+
+      maxAge: 1000 * 60 * 60 * 8
+    }
+  })
 );
 
-seedAdmin(
-  "super_admin",
-  process.env.SUPER_ADMIN_PASSWORD || "super123",
-  "super",
-  process.env.SUPER_ADMIN_PHONE
+
+// ======================================================
+// STATIC WEBSITE
+// ======================================================
+
+app.use(
+  express.static(
+    path.join(__dirname, "public")
+  )
 );
 
-// =========================
+
+// ======================================================
 // PORTAL NAMES
-// =========================
+// ======================================================
+
 const portalNames = {
   mental: "Mental Health",
   physical: "Physical Health",
   financial: "Financial Health"
 };
 
-// =========================
-// AUTHENTICATION MIDDLEWARE
-// =========================
+
+// ======================================================
+// ADMIN SEEDING
+// ======================================================
+
+function seedAdmin(
+  username,
+  password,
+  role
+) {
+  const db = readDatabase();
+
+  const existing =
+    db.admins.find(
+      admin =>
+        admin.username === username
+    );
+
+  if (!existing) {
+    const passwordHash =
+      bcrypt.hashSync(
+        password,
+        12
+      );
+
+    db.admins.push({
+      id: db.nextAdminId++,
+      username,
+      password_hash: passwordHash,
+      role
+    });
+
+    writeDatabase(db);
+
+    console.log(
+      `Created admin: ${username}`
+    );
+  }
+}
+
+
+// ======================================================
+// CREATE DEFAULT ADMINS
+// ======================================================
+
+seedAdmin(
+  "mental_admin",
+  process.env.MENTAL_ADMIN_PASSWORD ||
+    "mental123",
+  "mental"
+);
+
+seedAdmin(
+  "physical_admin",
+  process.env.PHYSICAL_ADMIN_PASSWORD ||
+    "physical123",
+  "physical"
+);
+
+seedAdmin(
+  "financial_admin",
+  process.env.FINANCIAL_ADMIN_PASSWORD ||
+    "financial123",
+  "financial"
+);
+
+seedAdmin(
+  "super_admin",
+  process.env.SUPER_ADMIN_PASSWORD ||
+    "super123",
+  "super"
+);
+
+
+// ======================================================
+// AUTHENTICATION
+// ======================================================
+
 function auth(req, res, next) {
   if (!req.session.admin) {
     return res.status(401).json({
@@ -153,95 +242,120 @@ function auth(req, res, next) {
   next();
 }
 
-// =========================
-// HEALTH CHECK
-// =========================
 
-// Server test
-app.get("/api/health", (req, res) => {
-  res.json({
-    ok: true,
-    message: "Seva Swasthya server is working"
-  });
+function canSee(admin, portal) {
+  return (
+    admin.role === "super" ||
+    admin.role === portal
+  );
+}
+
+
+// ======================================================
+// HOME
+// ======================================================
+
+app.get("/", (req, res) => {
+  res.sendFile(
+    path.join(
+      __dirname,
+      "public",
+      "index.html"
+    )
+  );
 });
 
-// Database test
-app.get("/api/db-health", (req, res) => {
-  try {
-    const result = db.prepare("SELECT 1 AS test").get();
 
+// ======================================================
+// ADMIN PAGE
+// ======================================================
+
+app.get("/admin", (req, res) => {
+  res.sendFile(
+    path.join(
+      __dirname,
+      "public",
+      "admin.html"
+    )
+  );
+});
+
+
+// ======================================================
+// HEALTH CHECK
+// ======================================================
+
+app.get(
+  "/api/health",
+  (req, res) => {
     res.json({
       ok: true,
-      database: "connected",
-      result
-    });
-  } catch (error) {
-    console.error("Database error:", error);
-
-    res.status(500).json({
-      ok: false,
-      database: "error",
-      error: error.message
+      message:
+        "Seva Swasthya server is working"
     });
   }
-});
+);
 
-// =========================
+
+// ======================================================
+// DATABASE HEALTH CHECK
+// ======================================================
+
+app.get(
+  "/api/db-health",
+  (req, res) => {
+    try {
+      const db = readDatabase();
+
+      res.json({
+        ok: true,
+        database: "connected",
+        admins: db.admins.length,
+        problems: db.problems.length
+      });
+    } catch (error) {
+      console.error(
+        "Database health error:",
+        error
+      );
+
+      res.status(500).json({
+        ok: false,
+        error:
+          "Database unavailable"
+      });
+    }
+  }
+);
+
+
+// ======================================================
 // SESSION CHECK
-// =========================
-app.get("/api/session", (req, res) => {
-  res.json({
-    loggedIn: !!req.session.admin,
-    admin: req.session.admin || null
-  });
-});
+// ======================================================
 
-// =========================
+app.get(
+  "/api/session",
+  (req, res) => {
+    res.json({
+      loggedIn:
+        !!req.session.admin,
+
+      admin:
+        req.session.admin || null
+    });
+  }
+);
+
+
+// ======================================================
 // SUBMIT PROBLEM
-// =========================
-app.post("/api/submit", (req, res) => {
-  try {
-    const {
-      portal,
-      name,
-      phone,
-      anonymous,
-      urgency,
-      title,
-      description
-    } = req.body;
+// ======================================================
 
-    if (!portalNames[portal]) {
-      return res.status(400).json({
-        error: "Invalid portal"
-      });
-    }
-
-    if (!title || !description) {
-      return res.status(400).json({
-        error: "Title and description are required"
-      });
-    }
-
-    const isAnonymous = !!anonymous;
-
-    const safeName = isAnonymous
-      ? ""
-      : String(name || "").trim();
-
-    const safePhone = isAnonymous
-      ? ""
-      : String(phone || "").trim();
-
-    const safeTitle = String(title).trim();
-    const safeDescription = String(description).trim();
-
-    const safeUrgency =
-      urgency === "urgent" ? "urgent" : "normal";
-
-    const result = db.prepare(`
-      INSERT INTO problems
-      (
+app.post(
+  "/api/submit",
+  (req, res) => {
+    try {
+      const {
         portal,
         name,
         phone,
@@ -249,355 +363,594 @@ app.post("/api/submit", (req, res) => {
         urgency,
         title,
         description
-      )
-      VALUES (?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      portal,
-      safeName,
-      safePhone,
-      isAnonymous ? 1 : 0,
-      safeUrgency,
-      safeTitle,
-      safeDescription
-    );
+      } = req.body;
 
-    console.log(
-      `New ${portalNames[portal]} problem #${result.lastInsertRowid}`
-    );
+      // -----------------------------
+      // VALIDATION
+      // -----------------------------
 
-    res.json({
-      ok: true,
-      id: result.lastInsertRowid
-    });
-
-  } catch (error) {
-    console.error("Submit error:", error);
-
-    res.status(500).json({
-      error: "Unable to submit problem"
-    });
-  }
-});
-
-// =========================
-// ADMIN LOGIN
-// =========================
-app.post("/api/login", (req, res) => {
-  try {
-    console.log("LOGIN REQUEST RECEIVED");
-
-    const username = String(req.body.username || "").trim();
-    const password = String(req.body.password || "");
-
-    console.log("Username:", username);
-
-    if (!username || !password) {
-      return res.status(400).json({
-        ok: false,
-        error: "Username and password are required"
-      });
-    }
-
-    const admin = db
-      .prepare(`
-        SELECT *
-        FROM admins
-        WHERE username = ?
-      `)
-      .get(username);
-
-    if (!admin) {
-      console.log("Admin not found:", username);
-
-      return res.status(401).json({
-        ok: false,
-        error: "Invalid username or password"
-      });
-    }
-
-    const passwordCorrect = bcrypt.compareSync(
-      password,
-      admin.password_hash
-    );
-
-    if (!passwordCorrect) {
-      console.log("Wrong password for:", username);
-
-      return res.status(401).json({
-        ok: false,
-        error: "Invalid username or password"
-      });
-    }
-
-    req.session.admin = {
-      id: admin.id,
-      username: admin.username,
-      role: admin.role,
-      phone: admin.phone || ""
-    };
-
-    console.log(
-      "LOGIN SUCCESS:",
-      admin.username,
-      admin.role
-    );
-
-    res.status(200).json({
-      ok: true,
-      admin: req.session.admin
-    });
-
-  } catch (error) {
-    console.error("LOGIN ERROR:", error);
-
-    res.status(500).json({
-      ok: false,
-      error: "Login server error: " + error.message
-    });
-  }
-});
-  try {
-    const username = String(req.body.username || "").trim();
-    const password = String(req.body.password || "");
-
-    if (!username || !password) {
-      return res.status(400).json({
-        error: "Username and password are required"
-      });
-    }
-
-    const admin = db
-      .prepare("SELECT * FROM admins WHERE username = ?")
-      .get(username);
-
-    if (
-      !admin ||
-      !bcrypt.compareSync(password, admin.password_hash)
-    ) {
-      return res.status(401).json({
-        error: "Invalid username or password"
-      });
-    }
-
-    req.session.admin = {
-      id: admin.id,
-      username: admin.username,
-      role: admin.role,
-      phone: admin.phone
-    };
-
-    req.session.save((err) => {
-      if (err) {
-        console.error("Session save error:", err);
-
-        return res.status(500).json({
-          error: "Unable to create login session"
+      if (!portalNames[portal]) {
+        return res.status(400).json({
+          error:
+            "Invalid portal"
         });
       }
 
+      if (
+        !title ||
+        !String(title).trim()
+      ) {
+        return res.status(400).json({
+          error:
+            "Problem title is required"
+        });
+      }
+
+      if (
+        !description ||
+        !String(description).trim()
+      ) {
+        return res.status(400).json({
+          error:
+            "Problem description is required"
+        });
+      }
+
+
+      // -----------------------------
+      // DATABASE
+      // -----------------------------
+
+      const db = readDatabase();
+
+      const isAnonymous =
+        anonymous === true ||
+        anonymous === "true";
+
+
+      const problem = {
+        id: db.nextProblemId++,
+
+        portal,
+
+        name:
+          isAnonymous
+            ? ""
+            : String(name || "").trim(),
+
+        phone:
+          isAnonymous
+            ? ""
+            : String(phone || "").trim(),
+
+        anonymous:
+          isAnonymous,
+
+        urgency:
+          urgency === "urgent"
+            ? "urgent"
+            : "normal",
+
+        title:
+          String(title)
+            .trim()
+            .substring(0, 120),
+
+        description:
+          String(description)
+            .trim()
+            .substring(0, 5000),
+
+        status: "new",
+
+        admin_note: "",
+
+        created_at:
+          new Date().toISOString()
+      };
+
+
+      db.problems.push(problem);
+
+
+      const saved =
+        writeDatabase(db);
+
+
+      if (!saved) {
+        return res.status(500).json({
+          error:
+            "Unable to save your concern"
+        });
+      }
+
+
+      console.log(
+        `New ${portalNames[portal]} problem #${problem.id}`
+      );
+
+
+      // -----------------------------
+      // RESPONSE
+      // -----------------------------
+
       res.json({
         ok: true,
-        admin: req.session.admin
+        id: problem.id
       });
-    });
 
-  } catch (error) {
-    console.error("Login error:", error);
+    } catch (error) {
+      console.error(
+        "Submit error:",
+        error
+      );
 
-    res.status(500).json({
-      error: "Server error during login"
-    });
+      res.status(500).json({
+        error:
+          "Server error while submitting concern"
+      });
+    }
   }
-});
+);
 
-// =========================
+
+// ======================================================
+// ADMIN LOGIN
+// ======================================================
+
+app.post(
+  "/api/login",
+  (req, res) => {
+    try {
+      const {
+        username,
+        password
+      } = req.body;
+
+      if (
+        !username ||
+        !password
+      ) {
+        return res.status(400).json({
+          error:
+            "Username and password are required"
+        });
+      }
+
+
+      const db =
+        readDatabase();
+
+
+      const admin =
+        db.admins.find(
+          item =>
+            item.username ===
+            String(username).trim()
+        );
+
+
+      if (!admin) {
+        return res.status(401).json({
+          error:
+            "Invalid username or password"
+        });
+      }
+
+
+      const passwordCorrect =
+        bcrypt.compareSync(
+          String(password),
+          admin.password_hash
+        );
+
+
+      if (!passwordCorrect) {
+        return res.status(401).json({
+          error:
+            "Invalid username or password"
+        });
+      }
+
+
+      req.session.admin = {
+        id: admin.id,
+        username: admin.username,
+        role: admin.role
+      };
+
+
+      console.log(
+        `Admin login: ${admin.username}`
+      );
+
+
+      res.json({
+        ok: true,
+
+        admin:
+          req.session.admin
+      });
+
+    } catch (error) {
+      console.error(
+        "Login error:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Server error during login"
+      });
+    }
+  }
+);
+
+
+// ======================================================
 // LOGOUT
-// =========================
-app.post("/api/logout", (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error("Logout error:", err);
+// ======================================================
 
-      return res.status(500).json({
-        error: "Unable to logout"
-      });
-    }
+app.post(
+  "/api/logout",
+  (req, res) => {
 
-    res.clearCookie("connect.sid");
+    req.session.destroy(
+      error => {
 
-    res.json({
-      ok: true
-    });
-  });
-});
+        if (error) {
+          console.error(
+            "Logout error:",
+            error
+          );
 
-// =========================
-// GET PROBLEMS
-// =========================
-app.get("/api/problems", auth, (req, res) => {
-  try {
-    const role = req.session.admin.role;
+          return res.status(500).json({
+            error:
+              "Unable to logout"
+          });
+        }
 
-    let rows;
+        res.clearCookie(
+          "connect.sid"
+        );
 
-    if (role === "super") {
-      rows = db
-        .prepare(`
-          SELECT *
-          FROM problems
-          ORDER BY created_at DESC, id DESC
-        `)
-        .all();
-    } else {
-      rows = db
-        .prepare(`
-          SELECT *
-          FROM problems
-          WHERE portal = ?
-          ORDER BY created_at DESC, id DESC
-        `)
-        .all(role);
-    }
-
-    res.json(rows);
-
-  } catch (error) {
-    console.error("Problems error:", error);
-
-    res.status(500).json({
-      error: "Unable to load problems"
-    });
+        res.json({
+          ok: true
+        });
+      }
+    );
   }
-});
+);
 
-// =========================
+
+// ======================================================
+// GET PROBLEMS
+// ======================================================
+
+app.get(
+  "/api/problems",
+  auth,
+  (req, res) => {
+
+    try {
+
+      const db =
+        readDatabase();
+
+      const role =
+        req.session.admin.role;
+
+
+      let problems;
+
+
+      if (role === "super") {
+
+        problems =
+          db.problems;
+
+      } else {
+
+        problems =
+          db.problems.filter(
+            problem =>
+              problem.portal === role
+          );
+
+      }
+
+
+      // Newest first
+
+      problems.sort(
+        (a, b) => {
+
+          const dateA =
+            new Date(
+              a.created_at
+            ).getTime();
+
+          const dateB =
+            new Date(
+              b.created_at
+            ).getTime();
+
+          return (
+            dateB - dateA ||
+            b.id - a.id
+          );
+        }
+      );
+
+
+      res.json(problems);
+
+    } catch (error) {
+
+      console.error(
+        "Problems error:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Unable to load problems"
+      });
+    }
+  }
+);
+
+
+// ======================================================
 // UPDATE PROBLEM
-// =========================
-app.patch("/api/problems/:id", auth, (req, res) => {
-  try {
-    const problem = db
-      .prepare("SELECT * FROM problems WHERE id = ?")
-      .get(req.params.id);
+// ======================================================
 
-    if (!problem) {
-      return res.status(404).json({
-        error: "Problem not found"
+app.patch(
+  "/api/problems/:id",
+  auth,
+  (req, res) => {
+
+    try {
+
+      const id =
+        Number(req.params.id);
+
+
+      const db =
+        readDatabase();
+
+
+      const problem =
+        db.problems.find(
+          item =>
+            item.id === id
+        );
+
+
+      if (!problem) {
+        return res.status(404).json({
+          error:
+            "Problem not found"
+        });
+      }
+
+
+      if (
+        !canSee(
+          req.session.admin,
+          problem.portal
+        )
+      ) {
+        return res.status(403).json({
+          error:
+            "You are not allowed to update this problem"
+        });
+      }
+
+
+      // -----------------------------
+      // STATUS
+      // -----------------------------
+
+      const allowedStatuses = [
+        "new",
+        "in_progress",
+        "resolved"
+      ];
+
+
+      if (
+        allowedStatuses.includes(
+          req.body.status
+        )
+      ) {
+        problem.status =
+          req.body.status;
+      }
+
+
+      // -----------------------------
+      // ADMIN NOTE
+      // -----------------------------
+
+      if (
+        typeof req.body.admin_note ===
+        "string"
+      ) {
+        problem.admin_note =
+          req.body.admin_note
+            .substring(0, 2000);
+      }
+
+
+      problem.updated_at =
+        new Date().toISOString();
+
+
+      const saved =
+        writeDatabase(db);
+
+
+      if (!saved) {
+        return res.status(500).json({
+          error:
+            "Unable to save changes"
+        });
+      }
+
+
+      res.json({
+        ok: true,
+        problem
+      });
+
+    } catch (error) {
+
+      console.error(
+        "Update error:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Unable to update problem"
       });
     }
+  }
+);
 
-    const admin = req.session.admin;
 
-    if (
-      admin.role !== "super" &&
-      admin.role !== problem.portal
-    ) {
-      return res.status(403).json({
-        error: "Not allowed"
+// ======================================================
+// STATS
+// ======================================================
+
+app.get(
+  "/api/stats",
+  auth,
+  (req, res) => {
+
+    try {
+
+      const db =
+        readDatabase();
+
+
+      const role =
+        req.session.admin.role;
+
+
+      let problems;
+
+
+      if (role === "super") {
+
+        problems =
+          db.problems;
+
+      } else {
+
+        problems =
+          db.problems.filter(
+            problem =>
+              problem.portal === role
+          );
+
+      }
+
+
+      const stats = {
+        new: 0,
+        in_progress: 0,
+        resolved: 0
+      };
+
+
+      problems.forEach(
+        problem => {
+
+          if (
+            stats[
+              problem.status
+            ] !== undefined
+          ) {
+
+            stats[
+              problem.status
+            ]++;
+
+          }
+
+        }
+      );
+
+
+      stats.total =
+        problems.length;
+
+
+      res.json(stats);
+
+    } catch (error) {
+
+      console.error(
+        "Stats error:",
+        error
+      );
+
+      res.status(500).json({
+        error:
+          "Unable to load statistics"
       });
     }
+  }
+);
 
-    const status = [
-      "new",
-      "in_progress",
-      "resolved"
-    ].includes(req.body.status)
-      ? req.body.status
-      : problem.status;
 
-    const note =
-      typeof req.body.admin_note === "string"
-        ? req.body.admin_note
-        : problem.admin_note;
+// ======================================================
+// 404 API HANDLER
+// ======================================================
 
-    db.prepare(`
-      UPDATE problems
-      SET status = ?, admin_note = ?
-      WHERE id = ?
-    `).run(
-      status,
-      note,
-      problem.id
+app.use(
+  "/api",
+  (req, res) => {
+
+    res.status(404).json({
+      error:
+        "API endpoint not found"
+    });
+
+  }
+);
+
+
+// ======================================================
+// SERVER START
+// ======================================================
+
+app.listen(
+  PORT,
+  "0.0.0.0",
+  () => {
+
+    console.log(
+      "======================================"
     );
 
-    res.json({
-      ok: true
-    });
+    console.log(
+      "SEVA SWASTHYA SERVER"
+    );
 
-  } catch (error) {
-    console.error("Update problem error:", error);
+    console.log(
+      `Running on port ${PORT}`
+    );
 
-    res.status(500).json({
-      error: "Unable to update problem"
-    });
+    console.log(
+      "Database: JSON"
+    );
+
+    console.log(
+      "======================================"
+    );
+
   }
-});
-
-// =========================
-// STATISTICS
-// =========================
-app.get("/api/stats", auth, (req, res) => {
-  try {
-    const role = req.session.admin.role;
-
-    let rows;
-
-    if (role === "super") {
-      rows = db.prepare(`
-        SELECT status, COUNT(*) AS count
-        FROM problems
-        GROUP BY status
-      `).all();
-    } else {
-      rows = db.prepare(`
-        SELECT status, COUNT(*) AS count
-        FROM problems
-        WHERE portal = ?
-        GROUP BY status
-      `).all(role);
-    }
-
-    const stats = {
-      new: 0,
-      in_progress: 0,
-      resolved: 0
-    };
-
-    rows.forEach((row) => {
-      stats[row.status] = row.count;
-    });
-
-    res.json(stats);
-
-  } catch (error) {
-    console.error("Stats error:", error);
-
-    res.status(500).json({
-      error: "Unable to load statistics"
-    });
-  }
-});
-
-// =========================
-// WEBSITE ROUTES
-// =========================
-app.get("/", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "public", "index.html")
-  );
-});
-
-app.get("/admin", (req, res) => {
-  res.sendFile(
-    path.join(__dirname, "public", "admin.html")
-  );
-});
-
-// =========================
-// START SERVER
-// =========================
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(
-    `Seva Swasthya running on port ${PORT}`
-  );
-  console.log(`Port: ${PORT}`);
-});
+);
