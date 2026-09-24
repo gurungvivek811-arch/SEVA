@@ -9,23 +9,38 @@
   <link rel="stylesheet" href="/style.css">
 
   <style>
-    /* =========================================
-       SEVA SWASTHYA ADMIN PORTAL
-       ========================================= */
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(50, 190, 225, .18), transparent 30%),
-        radial-gradient(circle at 90% 15%, rgba(110, 105, 235, .16), transparent 30%),
-        linear-gradient(135deg, #f5fbff, #f8f7ff);
-      color: #263852;
       min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #263852;
+
+      background:
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(50,190,225,.18),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(110,105,235,.16),
+          transparent 30%
+        ),
+        linear-gradient(
+          135deg,
+          #f5fbff,
+          #f8f7ff
+        );
     }
 
-    * {
-      box-sizing: border-box;
+    button,
+    input,
+    select {
+      font-family: inherit;
     }
 
     /* =========================================
@@ -36,38 +51,55 @@
       width: 100%;
       min-height: 76px;
       padding: 0 5%;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid rgba(215, 228, 238, .8);
-      background: rgba(255,255,255,.75);
-      backdrop-filter: blur(18px);
+
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 100;
+
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(18px);
+
+      border-bottom: 1px solid rgba(215,228,238,.8);
     }
 
     .admin-brand {
       display: flex;
       align-items: center;
       gap: 12px;
+
       color: #183d55;
       text-decoration: none;
+
+      font-size: 17px;
       font-weight: 900;
       letter-spacing: 1px;
-      font-size: 17px;
     }
 
     .admin-brand-icon {
       width: 42px;
       height: 42px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       border-radius: 13px;
-      background: linear-gradient(135deg, #dff8ff, #eeeaff);
+
+      background:
+        linear-gradient(
+          135deg,
+          #dff8ff,
+          #eeeaff
+        );
+
+      box-shadow:
+        0 8px 20px rgba(65,115,145,.12);
+
       font-size: 21px;
-      box-shadow: 0 8px 20px rgba(65, 115, 145, .12);
     }
 
     .admin-title {
@@ -77,14 +109,20 @@
     }
 
     #logout {
-      border: 0;
-      padding: 10px 17px;
-      border-radius: 11px;
-      background: #fff;
-      color: #60758a;
+      display: none;
+
       border: 1px solid #dce6ed;
+      border-radius: 11px;
+
+      padding: 10px 17px;
+
+      background: white;
+      color: #60758a;
+
       cursor: pointer;
+
       font-weight: 800;
+
       transition: .2s ease;
     }
 
@@ -101,76 +139,127 @@
     .admin-wrap {
       width: 92%;
       max-width: 1180px;
+
       margin: 0 auto;
-      padding: 45px 0 80px;
+
+      padding:
+        45px 0
+        80px;
     }
 
     /* =========================================
-       LOGIN
+       LOGIN CARD
        ========================================= */
 
     .login-card {
       width: 100%;
       max-width: 470px;
-      margin: 35px auto 70px;
+
+      margin:
+        35px auto
+        70px;
+
       padding: 44px;
+
       text-align: center;
-      background: rgba(255,255,255,.93);
-      border: 1px solid rgba(255,255,255,.95);
+
+      background:
+        rgba(255,255,255,.94);
+
+      border:
+        1px solid rgba(255,255,255,.95);
+
       border-radius: 30px;
-      box-shadow: 0 25px 75px rgba(45, 82, 110, .15);
+
+      box-shadow:
+        0 25px 75px
+        rgba(45,82,110,.15);
+
       backdrop-filter: blur(18px);
-      animation: loginAppear .6s ease;
+
+      animation:
+        loginAppear .6s ease;
     }
 
     @keyframes loginAppear {
       from {
         opacity: 0;
-        transform: translateY(25px) scale(.98);
+        transform:
+          translateY(25px)
+          scale(.98);
       }
+
       to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform:
+          translateY(0)
+          scale(1);
       }
     }
 
     .login-logo {
       width: 82px;
       height: 82px;
-      margin: 0 auto 18px;
+
+      margin:
+        0 auto 18px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       border-radius: 25px;
-      background: linear-gradient(135deg, #e4faff, #efecff);
+
+      background:
+        linear-gradient(
+          135deg,
+          #e4faff,
+          #efecff
+        );
+
+      box-shadow:
+        0 13px 30px
+        rgba(68,110,145,.14);
+
       font-size: 40px;
-      box-shadow: 0 13px 30px rgba(68, 110, 145, .14);
     }
 
     .login-badge {
       display: inline-block;
+
       padding: 8px 15px;
+
       border-radius: 50px;
+
       background: #f0f9fc;
       border: 1px solid #dceef4;
+
       color: #39819c;
+
       font-size: 10px;
       font-weight: 900;
       letter-spacing: 1.4px;
+
       margin-bottom: 16px;
     }
 
     .login-card h1 {
       margin: 0 0 10px;
+
+      color: #263852;
+
       font-size: 35px;
       line-height: 1.15;
-      color: #263852;
+
       letter-spacing: -.7px;
     }
 
     .login-card .muted {
-      margin: 0 0 28px;
+      margin:
+        0 0 28px;
+
       color: #748397;
+
       font-size: 14px;
       line-height: 1.6;
     }
@@ -181,125 +270,210 @@
 
     .login-card label {
       display: block;
+
       margin-top: 19px;
+
       color: #344b61;
+
       font-size: 13px;
       font-weight: 800;
     }
 
+    /* =========================================
+       INPUT
+       ========================================= */
+
     .input-box {
       position: relative;
+
       display: flex;
       align-items: center;
+
+      height: 54px;
+
       margin-top: 8px;
-      height: 52px;
+
       background: #fbfdff;
-      border: 1px solid #dce6ee;
+
+      border:
+        1px solid #dce6ee;
+
       border-radius: 14px;
+
       transition: .25s ease;
     }
 
     .input-box > span {
       width: 45px;
+
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+
       font-size: 17px;
+
       opacity: .8;
     }
 
     .input-box input {
       flex: 1;
+
       width: 100%;
       height: 100%;
-      border: none !important;
-      outline: none !important;
-      background: transparent !important;
-      box-shadow: none !important;
-      padding: 0 8px 0 0 !important;
-      margin: 0 !important;
+
+      padding:
+        0 8px 0 0;
+
+      margin: 0;
+
+      border: 0;
+      outline: 0;
+
+      background: transparent;
+
       color: #263852;
+
       font-size: 15px;
+    }
+
+    .input-box input::placeholder {
+      color: #9aa8b5;
     }
 
     .input-box:focus-within {
       border-color: #50b6d5;
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(80,182,213,.12);
+
+      background: white;
+
+      box-shadow:
+        0 0 0 4px
+        rgba(80,182,213,.12);
     }
 
     .password-toggle {
       width: 48px;
-      height: 50px;
+      height: 52px;
+
       padding: 0;
-      border: none;
+
+      border: 0;
+
       background: transparent;
+
       color: #718096;
+
       cursor: pointer;
+
       font-size: 17px;
     }
 
-    .password-toggle:hover {
-      transform: none !important;
-      background: transparent;
-    }
+    /* =========================================
+       LOGIN BUTTON
+       ========================================= */
 
     .admin-login-btn {
       width: 100%;
+
       margin-top: 28px;
+
       padding: 16px 20px;
-      border: none;
+
+      border: 0;
       border-radius: 14px;
-      background: linear-gradient(135deg, #159fc8, #6870e6);
+
+      background:
+        linear-gradient(
+          135deg,
+          #159fc8,
+          #6870e6
+        );
+
       color: white;
+
       font-size: 15px;
       font-weight: 800;
+
       cursor: pointer;
-      box-shadow: 0 13px 30px rgba(76,113,215,.25);
+
+      box-shadow:
+        0 13px 30px
+        rgba(76,113,215,.25);
+
       transition: .25s ease;
     }
 
     .admin-login-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 38px rgba(76,113,215,.32);
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 18px 38px
+        rgba(76,113,215,.32);
+    }
+
+    .admin-login-btn:disabled {
+      opacity: .65;
+      cursor: wait;
+      transform: none;
+    }
+
+    /* =========================================
+       LOGIN MESSAGE
+       ========================================= */
+
+    .error {
+      margin-top: 15px;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+
+      background: #fff1f2;
+      border: 1px solid #ffd0d5;
+
+      color: #b42318;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      text-align: center;
+    }
+
+    .success {
+      margin-top: 15px;
+
+      padding: 12px 14px;
+
+      border-radius: 12px;
+
+      background: #effcf5;
+      border: 1px solid #c9f0dc;
+
+      color: #16734b;
+
+      font-size: 13px;
+      font-weight: 700;
+
+      text-align: center;
     }
 
     .back-home {
       display: inline-block;
+
       margin-top: 24px;
+
       color: #5d7387;
+
       text-decoration: none;
+
       font-size: 13px;
       font-weight: 700;
+
       transition: .2s ease;
     }
 
     .back-home:hover {
       color: #168caf;
       transform: translateX(-3px);
-    }
-
-    .error {
-      margin-top: 15px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: #fff1f2;
-      border: 1px solid #ffd0d5;
-      color: #b42318;
-      font-size: 13px;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    .success {
-      margin-top: 15px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: #effcf5;
-      border: 1px solid #c9f0dc;
-      color: #16734b;
-      font-size: 13px;
-      font-weight: 700;
     }
 
     /* =========================================
@@ -310,29 +484,39 @@
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
+
       gap: 20px;
+
       margin-bottom: 28px;
     }
 
     .dashboard-label {
       display: inline-block;
+
+      margin-bottom: 8px;
+
       color: #3b8ba6;
+
       font-size: 11px;
       font-weight: 900;
       letter-spacing: 1.5px;
-      margin-bottom: 8px;
     }
 
     .dashboard-head h1 {
       margin: 0;
-      font-size: 38px;
+
       color: #263852;
+
+      font-size: 38px;
+
       letter-spacing: -.8px;
     }
 
     .dashboard-head p {
       margin: 8px 0 0;
+
       color: #758497;
+
       font-size: 14px;
     }
 
@@ -342,84 +526,134 @@
 
     .stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+
+      grid-template-columns:
+        repeat(3,1fr);
+
       gap: 18px;
+
       margin-bottom: 30px;
     }
 
     .stat-card {
       position: relative;
       overflow: hidden;
+
       padding: 25px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid #e4edf3;
+
+      background:
+        rgba(255,255,255,.9);
+
+      border:
+        1px solid #e4edf3;
+
       border-radius: 20px;
-      box-shadow: 0 12px 35px rgba(50, 80, 105, .07);
+
+      box-shadow:
+        0 12px 35px
+        rgba(50,80,105,.07);
     }
 
     .stat-card::after {
       content: "";
+
       position: absolute;
+
       right: -25px;
       top: -25px;
+
       width: 90px;
       height: 90px;
+
       border-radius: 50%;
-      background: rgba(80,180,215,.09);
+
+      background:
+        rgba(80,180,215,.09);
     }
 
     .stat-number {
       display: block;
+
+      margin-bottom: 5px;
+
+      color: #263852;
+
       font-size: 34px;
       font-weight: 900;
-      color: #263852;
-      margin-bottom: 5px;
     }
 
     .stat-name {
       color: #78899b;
+
       font-size: 13px;
       font-weight: 700;
     }
 
     /* =========================================
-       FILTER BAR
+       FILTER
        ========================================= */
 
     .filter-bar {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
+
       gap: 10px;
+
       padding: 14px;
       margin-bottom: 22px;
-      background: rgba(255,255,255,.9);
-      border: 1px solid #e2ebf1;
+
+      background:
+        rgba(255,255,255,.9);
+
+      border:
+        1px solid #e2ebf1;
+
       border-radius: 17px;
-      box-shadow: 0 8px 25px rgba(50,80,105,.06);
+
+      box-shadow:
+        0 8px 25px
+        rgba(50,80,105,.06);
     }
 
     .filter-btn {
-      border: none;
-      padding: 10px 17px;
+      border: 0;
+
+      padding:
+        10px 17px;
+
       border-radius: 10px;
+
       background: #f2f6f9;
+
       color: #62768a;
+
       font-size: 12px;
       font-weight: 800;
+
       cursor: pointer;
+
       transition: .2s ease;
     }
 
     .filter-btn:hover,
     .filter-btn.active {
-      background: linear-gradient(135deg, #159fc8, #6870e6);
+      background:
+        linear-gradient(
+          135deg,
+          #159fc8,
+          #6870e6
+        );
+
       color: white;
-      box-shadow: 0 7px 18px rgba(76,113,215,.18);
+
+      box-shadow:
+        0 7px 18px
+        rgba(76,113,215,.18);
     }
 
     /* =========================================
-       PROBLEM CARDS
+       PROBLEMS
        ========================================= */
 
     #problems {
@@ -428,75 +662,115 @@
     }
 
     .problem-card {
-      background: rgba(255,255,255,.94);
-      border: 1px solid #e1ebf1;
-      border-radius: 21px;
       padding: 25px;
-      box-shadow: 0 10px 32px rgba(50,80,105,.07);
+
+      background:
+        rgba(255,255,255,.94);
+
+      border:
+        1px solid #e1ebf1;
+
+      border-radius: 21px;
+
+      box-shadow:
+        0 10px 32px
+        rgba(50,80,105,.07);
+
       transition: .25s ease;
     }
 
     .problem-card:hover {
       transform: translateY(-2px);
-      box-shadow: 0 16px 38px rgba(50,80,105,.11);
+
+      box-shadow:
+        0 16px 38px
+        rgba(50,80,105,.11);
     }
 
     .problem-top {
       display: flex;
+
       justify-content: space-between;
       align-items: flex-start;
+
       gap: 15px;
+
       margin-bottom: 14px;
     }
 
     .problem-title {
       margin: 0;
+
       color: #263852;
+
       font-size: 19px;
       line-height: 1.3;
     }
 
     .problem-id {
       margin-top: 5px;
+
       color: #94a2b0;
+
       font-size: 11px;
       font-weight: 700;
     }
 
     .portal-tag {
       display: inline-flex;
-      padding: 7px 11px;
+
+      padding:
+        7px 11px;
+
       border-radius: 50px;
+
       background: #eef8fc;
+
       color: #3c8aa2;
+
       font-size: 10px;
       font-weight: 900;
+
       white-space: nowrap;
     }
 
     .problem-description {
       margin: 14px 0;
+
       padding: 15px;
+
       border-radius: 13px;
+
       background: #f8fbfd;
+
       color: #52677b;
+
       font-size: 14px;
       line-height: 1.65;
+
       white-space: pre-wrap;
+      overflow-wrap: anywhere;
     }
 
     .problem-meta {
       display: flex;
       flex-wrap: wrap;
+
       gap: 9px;
+
       margin-bottom: 18px;
     }
 
     .meta-item {
-      padding: 7px 10px;
+      padding:
+        7px 10px;
+
       border-radius: 9px;
+
       background: #f4f7fa;
+
       color: #66798c;
+
       font-size: 11px;
       font-weight: 700;
     }
@@ -509,72 +783,121 @@
     .problem-actions {
       display: flex;
       align-items: center;
-      gap: 10px;
       flex-wrap: wrap;
+
+      gap: 10px;
+
       padding-top: 17px;
-      border-top: 1px solid #edf1f4;
+
+      border-top:
+        1px solid #edf1f4;
     }
 
     .status-select {
       min-width: 160px;
-      padding: 10px 12px;
-      border: 1px solid #dce6ed;
+
+      padding:
+        10px 12px;
+
+      border:
+        1px solid #dce6ed;
+
       border-radius: 10px;
+
       background: white;
+
       color: #506579;
+
       font-size: 12px;
       font-weight: 700;
+
       outline: none;
     }
 
     .note-input {
       flex: 1;
+
       min-width: 220px;
-      padding: 10px 12px;
-      border: 1px solid #dce6ed;
+
+      padding:
+        10px 12px;
+
+      border:
+        1px solid #dce6ed;
+
       border-radius: 10px;
+
       outline: none;
+
       font-size: 12px;
     }
 
     .note-input:focus,
     .status-select:focus {
       border-color: #51b6d5;
-      box-shadow: 0 0 0 3px rgba(81,182,213,.1);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(81,182,213,.1);
     }
 
     .save-btn {
-      padding: 11px 17px;
-      border: none;
+      padding:
+        11px 17px;
+
+      border: 0;
       border-radius: 10px;
-      background: linear-gradient(135deg,#159fc8,#6870e6);
+
+      background:
+        linear-gradient(
+          135deg,
+          #159fc8,
+          #6870e6
+        );
+
       color: white;
+
       font-size: 12px;
       font-weight: 800;
+
       cursor: pointer;
     }
 
-    .save-btn:hover {
-      transform: translateY(-1px);
+    .save-btn:disabled {
+      opacity: .6;
+      cursor: wait;
     }
+
+    /* =========================================
+       EMPTY / LOADING
+       ========================================= */
 
     .empty-state {
       padding: 55px 20px;
+
       text-align: center;
-      background: rgba(255,255,255,.85);
-      border: 1px dashed #d6e2ea;
+
+      background:
+        rgba(255,255,255,.85);
+
+      border:
+        1px dashed #d6e2ea;
+
       border-radius: 20px;
+
       color: #7b8b9b;
     }
 
     .empty-icon {
-      font-size: 40px;
       margin-bottom: 10px;
+      font-size: 40px;
     }
 
     .loading {
-      text-align: center;
       padding: 40px;
+
+      text-align: center;
+
       color: #7b8b9b;
     }
 
@@ -661,13 +984,22 @@
   <header class="admin-topbar">
 
     <a href="/" class="admin-brand">
-      <span class="admin-brand-icon">🤝</span>
-      <span>SEVA SWASTHYA</span>
+
+      <span class="admin-brand-icon">
+        🤝
+      </span>
+
+      <span>
+        SEVA SWASTHYA
+      </span>
+
     </a>
 
-    <span class="admin-title">ADMIN PORTAL</span>
+    <span class="admin-title">
+      ADMIN PORTAL
+    </span>
 
-    <button id="logout" style="display:none;">
+    <button id="logout">
       Logout
     </button>
 
@@ -680,11 +1012,15 @@
 
   <main class="admin-wrap">
 
+
     <!-- =======================================
          LOGIN
          ======================================= -->
 
-    <section id="loginCard" class="login-card">
+    <section
+      id="loginCard"
+      class="login-card"
+    >
 
       <div class="login-logo">
         🤝
@@ -709,7 +1045,10 @@
           Username
 
           <div class="input-box">
-            <span>👤</span>
+
+            <span>
+              👤
+            </span>
 
             <input
               name="username"
@@ -717,6 +1056,7 @@
               autocomplete="username"
               placeholder="Enter your username"
             >
+
           </div>
         </label>
 
@@ -725,7 +1065,10 @@
           Password
 
           <div class="input-box">
-            <span>🔑</span>
+
+            <span>
+              🔑
+            </span>
 
             <input
               id="adminPassword"
@@ -739,7 +1082,7 @@
             <button
               type="button"
               class="password-toggle"
-              onclick="togglePassword()"
+              id="passwordToggle"
               aria-label="Show password"
             >
               👁
@@ -750,6 +1093,7 @@
 
 
         <button
+          id="loginButton"
           type="submit"
           class="admin-login-btn"
         >
@@ -762,7 +1106,10 @@
       </form>
 
 
-      <a href="/" class="back-home">
+      <a
+        href="/"
+        class="back-home"
+      >
         ← Back to Seva Swasthya
       </a>
 
@@ -781,6 +1128,7 @@
       <div class="dashboard-head">
 
         <div>
+
           <span class="dashboard-label">
             ADMIN DASHBOARD
           </span>
@@ -792,6 +1140,7 @@
           <p id="adminInfo">
             Loading administrator information...
           </p>
+
         </div>
 
       </div>
@@ -802,6 +1151,7 @@
       <div class="stats">
 
         <div class="stat-card">
+
           <span
             id="newCount"
             class="stat-number"
@@ -812,10 +1162,12 @@
           <span class="stat-name">
             New Concerns
           </span>
+
         </div>
 
 
         <div class="stat-card">
+
           <span
             id="progressCount"
             class="stat-number"
@@ -826,10 +1178,12 @@
           <span class="stat-name">
             In Progress
           </span>
+
         </div>
 
 
         <div class="stat-card">
+
           <span
             id="resolvedCount"
             class="stat-number"
@@ -840,6 +1194,7 @@
           <span class="stat-name">
             Resolved
           </span>
+
         </div>
 
       </div>
@@ -902,47 +1257,59 @@
   <script>
 
     let currentAdmin = null;
+
     let allProblems = [];
+
     let currentFilter = "all";
 
 
     /* =========================================
-       PASSWORD SHOW / HIDE
+       PASSWORD TOGGLE
        ========================================= */
 
-    function togglePassword() {
+    document
+      .getElementById("passwordToggle")
+      .addEventListener(
+        "click",
+        function() {
 
-      const password =
-        document.getElementById("adminPassword");
+          const password =
+            document.getElementById(
+              "adminPassword"
+            );
 
-      const button =
-        document.querySelector(".password-toggle");
+          if (
+            password.type === "password"
+          ) {
 
-      if (password.type === "password") {
+            password.type = "text";
 
-        password.type = "text";
-        button.textContent = "🙈";
-        button.setAttribute(
-          "aria-label",
-          "Hide password"
-        );
+            this.textContent = "🙈";
 
-      } else {
+            this.setAttribute(
+              "aria-label",
+              "Hide password"
+            );
 
-        password.type = "password";
-        button.textContent = "👁";
-        button.setAttribute(
-          "aria-label",
-          "Show password"
-        );
+          } else {
 
-      }
+            password.type = "password";
 
-    }
+            this.textContent = "👁";
+
+            this.setAttribute(
+              "aria-label",
+              "Show password"
+            );
+
+          }
+
+        }
+      );
 
 
     /* =========================================
-       SESSION
+       SESSION CHECK
        ========================================= */
 
     async function loadSession() {
@@ -950,14 +1317,30 @@
       try {
 
         const response =
-          await fetch("/api/session");
+          await fetch(
+            "/api/session",
+            {
+              method: "GET",
+              credentials: "same-origin",
+              cache: "no-store"
+            }
+          );
+
+        if (!response.ok) {
+          return;
+        }
 
         const data =
           await response.json();
 
-        if (data.loggedIn) {
+        if (
+          data &&
+          data.loggedIn &&
+          data.admin
+        ) {
 
-          currentAdmin = data.admin;
+          currentAdmin =
+            data.admin;
 
           showDashboard();
 
@@ -966,7 +1349,7 @@
       } catch (error) {
 
         console.error(
-          "Session error:",
+          "Session check error:",
           error
         );
 
@@ -998,6 +1381,7 @@
         getRoleName(
           currentAdmin.role
         );
+
 
       document.getElementById(
         "adminInfo"
@@ -1035,7 +1419,11 @@
 
       };
 
-      return names[role] || role;
+      return (
+        names[role] ||
+        role ||
+        "Administrator"
+      );
 
     }
 
@@ -1048,27 +1436,67 @@
       .getElementById("loginForm")
       .addEventListener(
         "submit",
-        async function(e) {
+        async function(event) {
 
-          e.preventDefault();
+          event.preventDefault();
 
+
+          const form =
+            this;
 
           const loginMsg =
             document.getElementById(
               "loginMsg"
             );
 
-          loginMsg.textContent = "";
-          loginMsg.className = "";
+          const loginButton =
+            document.getElementById(
+              "loginButton"
+            );
+
+
+          loginMsg.textContent =
+            "";
+
+          loginMsg.className =
+            "";
 
 
           const data =
             Object.fromEntries(
-              new FormData(this)
+              new FormData(form)
             );
 
 
+          if (
+            !data.username ||
+            !data.password
+          ) {
+
+            loginMsg.className =
+              "error";
+
+            loginMsg.textContent =
+              "Please enter username and password.";
+
+            return;
+
+          }
+
+
+          loginButton.disabled =
+            true;
+
+          loginButton.textContent =
+            "Signing in...";
+
+
           try {
+
+            console.log(
+              "Sending login request..."
+            );
+
 
             const response =
               await fetch(
@@ -1076,8 +1504,14 @@
                 {
                   method: "POST",
 
+                  credentials:
+                    "same-origin",
+
                   headers: {
                     "Content-Type":
+                      "application/json",
+
+                    "Accept":
                       "application/json"
                   },
 
@@ -1087,11 +1521,68 @@
               );
 
 
-            const result =
-              await response.json();
+            console.log(
+              "Login HTTP status:",
+              response.status
+            );
 
 
-            if (!response.ok) {
+            /*
+              Read text first.
+
+              This prevents JSON parsing
+              from causing the generic
+              "Unable to connect" error
+              if Render returns something
+              unexpected.
+            */
+
+            const responseText =
+              await response.text();
+
+
+            console.log(
+              "Login response:",
+              responseText
+            );
+
+
+            let result = {};
+
+            try {
+
+              result =
+                responseText
+                  ? JSON.parse(
+                      responseText
+                    )
+                  : {};
+
+            } catch (jsonError) {
+
+              console.error(
+                "Invalid JSON response:",
+                jsonError
+              );
+
+              loginMsg.className =
+                "error";
+
+              loginMsg.textContent =
+                "Server returned an invalid response.";
+
+              return;
+
+            }
+
+
+            /* =========================
+               LOGIN FAILED
+               ========================= */
+
+            if (
+              !response.ok
+            ) {
 
               loginMsg.className =
                 "error";
@@ -1105,23 +1596,64 @@
             }
 
 
+            /* =========================
+               LOGIN SUCCESS
+               ========================= */
+
+            if (
+              !result.ok ||
+              !result.admin
+            ) {
+
+              loginMsg.className =
+                "error";
+
+              loginMsg.textContent =
+                result.error ||
+                "Login was not completed.";
+
+              return;
+
+            }
+
+
+            console.log(
+              "Login successful:",
+              result.admin
+            );
+
+
             currentAdmin =
               result.admin;
 
 
-            this.reset();
+            form.reset();
+
 
             showDashboard();
 
+
           } catch (error) {
 
-            console.error(error);
+            console.error(
+              "LOGIN REQUEST ERROR:",
+              error
+            );
+
 
             loginMsg.className =
               "error";
 
             loginMsg.textContent =
-              "Unable to connect to server.";
+              "Login request failed. Please refresh the page and try again.";
+
+          } finally {
+
+            loginButton.disabled =
+              false;
+
+            loginButton.textContent =
+              "Login to Dashboard →";
 
           }
 
@@ -1139,18 +1671,40 @@
         "click",
         async function() {
 
+          this.disabled = true;
+
+          this.textContent =
+            "Logging out...";
+
+
           try {
 
             await fetch(
               "/api/logout",
               {
-                method: "POST"
+                method: "POST",
+
+                credentials:
+                  "same-origin",
+
+                headers: {
+                  "Accept":
+                    "application/json"
+                }
               }
+            );
+
+          } catch (error) {
+
+            console.error(
+              "Logout error:",
+              error
             );
 
           } finally {
 
-            location.reload();
+            window.location.href =
+              "/admin";
 
           }
 
@@ -1163,39 +1717,67 @@
        ========================================= */
 
     document
-      .querySelectorAll(".filter-btn")
-      .forEach(button => {
+      .querySelectorAll(
+        ".filter-btn"
+      )
+      .forEach(
+        function(button) {
 
-        button.addEventListener(
-          "click",
-          function() {
+          button.addEventListener(
+            "click",
+            function() {
 
-            document
-              .querySelectorAll(".filter-btn")
-              .forEach(btn =>
-                btn.classList.remove(
-                  "active"
+              document
+                .querySelectorAll(
+                  ".filter-btn"
                 )
+                .forEach(
+                  function(btn) {
+
+                    btn.classList.remove(
+                      "active"
+                    );
+
+                  }
+                );
+
+
+              this.classList.add(
+                "active"
               );
 
-            this.classList.add("active");
 
-            currentFilter =
-              this.dataset.filter;
+              currentFilter =
+                this.dataset.filter;
 
-            renderProblems();
 
-          }
-        );
+              renderProblems();
 
-      });
+            }
+          );
+
+        }
+      );
 
 
     /* =========================================
-       REFRESH DATA
+       REFRESH DASHBOARD
        ========================================= */
 
     async function refresh() {
+
+      const container =
+        document.getElementById(
+          "problems"
+        );
+
+
+      container.innerHTML = `
+        <div class="loading">
+          Loading concerns...
+        </div>
+      `;
+
 
       try {
 
@@ -1205,40 +1787,152 @@
         ] = await Promise.all([
 
           fetch(
-            "/api/problems"
+            "/api/problems",
+            {
+              credentials:
+                "same-origin",
+              cache: "no-store"
+            }
           ),
 
           fetch(
-            "/api/stats"
+            "/api/stats",
+            {
+              credentials:
+                "same-origin",
+              cache: "no-store"
+            }
           )
 
         ]);
 
 
-        const problemsData =
-          await problemsResponse.json();
+        /* =========================
+           AUTH SESSION EXPIRED
+           ========================= */
 
-        const statsData =
-          await statsResponse.json();
+        if (
+          problemsResponse.status === 401 ||
+          statsResponse.status === 401
+        ) {
+
+          currentAdmin = null;
+
+          document.getElementById(
+            "dashboard"
+          ).style.display = "none";
+
+          document.getElementById(
+            "loginCard"
+          ).style.display = "block";
+
+          document.getElementById(
+            "logout"
+          ).style.display = "none";
+
+          return;
+
+        }
 
 
-        /*
-          API may return either:
-          { problems: [...] }
-          OR
-          [...]
-        */
+        /* =========================
+           PROBLEMS RESPONSE
+           ========================= */
 
-        allProblems =
-          Array.isArray(problemsData)
-            ? problemsData
-            : (
-                problemsData.problems ||
-                []
-              );
+        const problemsText =
+          await problemsResponse.text();
 
 
-        updateStats(statsData);
+        let problemsData = [];
+
+        try {
+
+          problemsData =
+            problemsText
+              ? JSON.parse(
+                  problemsText
+                )
+              : [];
+
+        } catch {
+
+          problemsData = [];
+
+        }
+
+
+        if (
+          !problemsResponse.ok
+        ) {
+
+          throw new Error(
+            problemsData.error ||
+            "Unable to load problems."
+          );
+
+        }
+
+
+        if (
+          Array.isArray(
+            problemsData
+          )
+        ) {
+
+          allProblems =
+            problemsData;
+
+        } else {
+
+          allProblems =
+            problemsData.problems ||
+            [];
+
+        }
+
+
+        /* =========================
+           STATS RESPONSE
+           ========================= */
+
+        const statsText =
+          await statsResponse.text();
+
+
+        let statsData = {};
+
+        try {
+
+          statsData =
+            statsText
+              ? JSON.parse(
+                  statsText
+                )
+              : {};
+
+        } catch {
+
+          statsData = {};
+
+        }
+
+
+        if (
+          !statsResponse.ok
+        ) {
+
+          throw new Error(
+            statsData.error ||
+            "Unable to load statistics."
+          );
+
+        }
+
+
+        updateStats(
+          statsData
+        );
+
 
         renderProblems();
 
@@ -1250,9 +1944,8 @@
           error
         );
 
-        document.getElementById(
-          "problems"
-        ).innerHTML = `
+
+        container.innerHTML = `
 
           <div class="empty-state">
 
@@ -1265,8 +1958,19 @@
             </strong>
 
             <p>
-              Please refresh the page and try again.
+              ${escapeHtml(
+                error.message ||
+                "Please refresh the page and try again."
+              )}
             </p>
+
+            <button
+              class="save-btn"
+              onclick="refresh()"
+              style="margin-top:15px;"
+            >
+              Try Again
+            </button>
 
           </div>
 
@@ -1278,17 +1982,10 @@
 
 
     /* =========================================
-       UPDATE STATS
+       UPDATE STATISTICS
        ========================================= */
 
     function updateStats(data) {
-
-      /*
-        Supports both:
-        {new: 1, in_progress: 2, resolved: 3}
-        and
-        {newCount: 1, progressCount: 2, resolvedCount: 3}
-      */
 
       const newCount =
         data.new ??
@@ -1296,11 +1993,13 @@
         data.pending ??
         0;
 
+
       const progressCount =
         data.in_progress ??
         data.inProgress ??
         data.progressCount ??
         0;
+
 
       const resolvedCount =
         data.resolved ??
@@ -1310,7 +2009,8 @@
 
       document.getElementById(
         "newCount"
-      ).textContent = newCount;
+      ).textContent =
+        newCount;
 
 
       document.getElementById(
@@ -1349,15 +2049,22 @@
 
         problems =
           problems.filter(
-            problem =>
-              problem.status ===
-              currentFilter
+            function(problem) {
+
+              return (
+                problem.status ===
+                currentFilter
+              );
+
+            }
           );
 
       }
 
 
-      if (!problems.length) {
+      if (
+        problems.length === 0
+      ) {
 
         container.innerHTML = `
 
@@ -1385,9 +2092,11 @@
 
 
       container.innerHTML =
-        problems.map(
-          createProblemCard
-        ).join("");
+        problems
+          .map(
+            createProblemCard
+          )
+          .join("");
 
     }
 
@@ -1396,7 +2105,9 @@
        CREATE PROBLEM CARD
        ========================================= */
 
-    function createProblemCard(problem) {
+    function createProblemCard(
+      problem
+    ) {
 
       const portalNames = {
 
@@ -1404,7 +2115,7 @@
           "🧠 Mental Health",
 
         physical:
-          "🏃 Physical Health",
+          "💪 Physical Health",
 
         financial:
           "💰 Financial Health"
@@ -1416,13 +2127,17 @@
         portalNames[
           problem.portal
         ] ||
-        problem.portal ||
         "General";
 
 
       const status =
         problem.status ||
         "new";
+
+
+      const urgency =
+        problem.urgency ||
+        "normal";
 
 
       const statusText = {
@@ -1436,12 +2151,8 @@
         resolved:
           "Resolved"
 
-      }[status] || status;
-
-
-      const urgency =
-        problem.urgency ||
-        "normal";
+      }[status] ||
+      status;
 
 
       const name =
@@ -1626,18 +2337,63 @@
        SAVE PROBLEM
        ========================================= */
 
-    async function saveProblem(id) {
+    async function saveProblem(
+      id
+    ) {
 
-      const status =
+      const statusElement =
         document.getElementById(
           "status-" + id
-        ).value;
+        );
+
+
+      const noteElement =
+        document.getElementById(
+          "note-" + id
+        );
+
+
+      if (
+        !statusElement ||
+        !noteElement
+      ) {
+
+        return;
+
+      }
+
+
+      const status =
+        statusElement.value;
 
 
       const admin_note =
-        document.getElementById(
-          "note-" + id
-        ).value;
+        noteElement.value;
+
+
+      const card =
+        document.querySelector(
+          `.problem-card[data-id="${id}"]`
+        );
+
+
+      const saveButton =
+        card
+          ? card.querySelector(
+              ".save-btn"
+            )
+          : null;
+
+
+      if (saveButton) {
+
+        saveButton.disabled =
+          true;
+
+        saveButton.textContent =
+          "Saving...";
+
+      }
 
 
       try {
@@ -1648,8 +2404,14 @@
             {
               method: "PATCH",
 
+              credentials:
+                "same-origin",
+
               headers: {
                 "Content-Type":
+                  "application/json",
+
+                "Accept":
                   "application/json"
               },
 
@@ -1662,25 +2424,36 @@
           );
 
 
-        const result =
-          await response.json();
+        const text =
+          await response.text();
 
 
-        if (!response.ok) {
+        let result = {};
 
-          alert(
-            result.error ||
-            "Unable to update concern."
-          );
+        try {
 
-          return;
+          result =
+            text
+              ? JSON.parse(text)
+              : {};
+
+        } catch {
+
+          result = {};
 
         }
 
 
-        alert(
-          "Concern updated successfully."
-        );
+        if (
+          !response.ok
+        ) {
+
+          throw new Error(
+            result.error ||
+            "Unable to update concern."
+          );
+
+        }
 
 
         await refresh();
@@ -1688,11 +2461,29 @@
 
       } catch (error) {
 
-        console.error(error);
+        console.error(
+          "Save problem error:",
+          error
+        );
+
 
         alert(
-          "Unable to connect to server."
+          error.message ||
+          "Unable to update concern."
         );
+
+
+      } finally {
+
+        if (saveButton) {
+
+          saveButton.disabled =
+            false;
+
+          saveButton.textContent =
+            "Save Changes";
+
+        }
 
       }
 
@@ -1703,12 +2494,25 @@
        DATE FORMAT
        ========================================= */
 
-    function formatDate(value) {
+    function formatDate(
+      value
+    ) {
 
       try {
 
         const date =
           new Date(value);
+
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+
+          return value;
+
+        }
 
 
         return date.toLocaleString(
@@ -1732,14 +2536,31 @@
        HTML ESCAPE
        ========================================= */
 
-    function escapeHtml(value) {
+    function escapeHtml(
+      value
+    ) {
 
       return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
 
     }
 
