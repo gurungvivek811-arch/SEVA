@@ -2044,4 +2044,459 @@ body:has(.login-card) .topbar strong {
   body:has(.login-card) .topbar strong {
     font-size: 12px;
   }
+/* =========================================
+   SEVA SWASTHYA - ADMIN LOGIN
+   ========================================= */
 
+.admin-wrap {
+  width: 100%;
+  min-height: calc(100vh - 90px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 45px 20px 80px;
+}
+
+/* ADMIN LOGIN CARD */
+
+.login-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 42px;
+
+  background: rgba(255,255,255,0.96);
+
+  border: 1px solid #e3edf4;
+  border-radius: 30px;
+
+  box-shadow:
+    0 25px 70px rgba(38, 76, 105, 0.15);
+
+  text-align: center;
+
+  animation: adminAppear 0.6s ease;
+}
+
+@keyframes adminAppear {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* LOGO */
+
+.login-logo {
+  width: 78px;
+  height: 78px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 23px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e7faff,
+      #efebff
+    );
+
+  font-size: 38px;
+
+  box-shadow:
+    0 12px 30px rgba(63, 102, 135, 0.14);
+}
+
+/* SECURITY BADGE */
+
+.login-badge {
+  display: inline-block;
+
+  padding: 8px 15px;
+
+  margin-bottom: 17px;
+
+  border-radius: 50px;
+
+  background: #f0f9fc;
+
+  border: 1px solid #d7edf4;
+
+  color: #347b96;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.3px;
+}
+
+/* HEADING */
+
+.login-card h1 {
+  margin: 0 0 10px;
+
+  color: #263852;
+
+  font-size: 36px;
+
+  line-height: 1.15;
+
+  letter-spacing: -1px;
+}
+
+.login-card .muted {
+  margin: 0 auto 30px;
+
+  max-width: 350px;
+
+  color: #718095;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+/* FORM */
+
+.login-card form {
+  text-align: left;
+}
+
+/* LABEL */
+
+.login-card label {
+  display: block;
+
+  margin-top: 19px;
+
+  color: #344b61;
+
+  font-size: 13px;
+
+  font-weight: 800;
+}
+
+/* INPUT BOX */
+
+.input-box {
+  width: 100%;
+
+  height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  margin-top: 8px;
+
+  background: #fafdff;
+
+  border: 1px solid #d9e5ed;
+
+  border-radius: 14px;
+
+  transition: 0.25s ease;
+}
+
+.input-box:focus-within {
+  background: #ffffff;
+
+  border-color: #51b7d6;
+
+  box-shadow:
+    0 0 0 4px rgba(81,183,214,0.13);
+}
+
+.input-box > span {
+  width: 45px;
+
+  flex-shrink: 0;
+
+  text-align: center;
+
+  font-size: 17px;
+}
+
+/* INPUT */
+
+.input-box input {
+  flex: 1;
+
+  min-width: 0;
+
+  height: 100%;
+
+  padding: 0 8px 0 0 !important;
+
+  margin: 0 !important;
+
+  border: none !important;
+
+  outline: none !important;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  color: #263852;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 15px;
+}
+
+.input-box input::placeholder {
+  color: #9aa8b5;
+}
+
+/* PASSWORD EYE */
+
+.password-toggle {
+  width: 50px;
+
+  height: 100%;
+
+  flex-shrink: 0;
+
+  padding: 0 !important;
+
+  margin: 0 !important;
+
+  border: none !important;
+
+  outline: none;
+
+  background: transparent !important;
+
+  box-shadow: none !important;
+
+  color: #718096;
+
+  font-size: 17px;
+
+  cursor: pointer;
+}
+
+.password-toggle:hover {
+  transform: none !important;
+
+  background: transparent !important;
+}
+
+/* LOGIN BUTTON */
+
+.admin-login-btn {
+  width: 100%;
+
+  height: 55px;
+
+  margin-top: 29px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #159fc8,
+      #6870e6
+    );
+
+  color: white;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 13px 30px rgba(76,113,215,0.25);
+
+  transition: 0.25s ease;
+}
+
+.admin-login-btn:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 38px rgba(76,113,215,0.32);
+}
+
+.admin-login-btn:active {
+  transform: translateY(0);
+}
+
+/* ERROR MESSAGE */
+
+.login-card .error {
+  margin-top: 16px;
+
+  padding: 13px 15px;
+
+  border-radius: 12px;
+
+  background: #fff1f2;
+
+  border: 1px solid #ffd0d5;
+
+  color: #b42318;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-align: center;
+}
+
+/* BACK HOME */
+
+.back-home {
+  display: inline-block;
+
+  margin-top: 25px;
+
+  color: #5d7387;
+
+  text-decoration: none;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  transition: 0.2s ease;
+}
+
+.back-home:hover {
+  color: #159fc8;
+
+  transform: translateX(-3px);
+}
+
+
+/* =========================================
+   ADMIN PAGE BACKGROUND
+   ========================================= */
+
+body:has(.login-card) {
+  background:
+    radial-gradient(
+      circle at 5% 10%,
+      rgba(75,210,240,0.22),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 95% 20%,
+      rgba(145,115,245,0.20),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(80,210,160,0.13),
+      transparent 35%
+    ),
+    #f7fbff;
+}
+
+
+/* =========================================
+   ADMIN TOP BAR
+   ========================================= */
+
+body:has(.login-card) .topbar {
+  width: 92%;
+  max-width: 1100px;
+
+  margin: auto;
+
+  min-height: 82px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  border-bottom: 1px solid rgba(220,232,240,0.8);
+}
+
+body:has(.login-card) .topbar > a {
+  color: #21627a;
+
+  text-decoration: none;
+
+  font-size: 19px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+body:has(.login-card) .topbar strong {
+  color: #6b7d8e;
+
+  font-size: 14px;
+}
+
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 600px) {
+
+  .admin-wrap {
+    min-height: calc(100vh - 75px);
+
+    padding: 25px 15px 60px;
+  }
+
+  .login-card {
+    padding: 30px 21px;
+
+    border-radius: 25px;
+  }
+
+  .login-logo {
+    width: 68px;
+    height: 68px;
+
+    font-size: 32px;
+  }
+
+  .login-card h1 {
+    font-size: 29px;
+  }
+
+  .login-card .muted {
+    font-size: 13px;
+  }
+
+  body:has(.login-card) .topbar {
+    width: 92%;
+
+    min-height: 70px;
+  }
+
+  body:has(.login-card) .topbar > a {
+    font-size: 14px;
+  }
+
+  body:has(.login-card) .topbar strong {
+    font-size: 11px;
+  }
+
+}
