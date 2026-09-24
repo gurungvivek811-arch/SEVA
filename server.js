@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const path = require("path");
+const https = require("https");
 
 const app = express();
 
@@ -51,13 +52,25 @@ function readDatabase() {
     const data = JSON.parse(raw);
 
     return {
-      admins: Array.isArray(data.admins) ? data.admins : [],
-      problems: Array.isArray(data.problems) ? data.problems : [],
-      nextAdminId: Number(data.nextAdminId) || 1,
-      nextProblemId: Number(data.nextProblemId) || 1
+      admins: Array.isArray(data.admins)
+        ? data.admins
+        : [],
+
+      problems: Array.isArray(data.problems)
+        ? data.problems
+        : [],
+
+      nextAdminId:
+        Number(data.nextAdminId) || 1,
+
+      nextProblemId:
+        Number(data.nextProblemId) || 1
     };
   } catch (error) {
-    console.error("Database read error:", error);
+    console.error(
+      "Database read error:",
+      error
+    );
 
     return {
       admins: [],
@@ -79,7 +92,11 @@ function writeDatabase(data) {
 
     return true;
   } catch (error) {
-    console.error("Database write error:", error);
+    console.error(
+      "Database write error:",
+      error
+    );
+
     return false;
   }
 }
@@ -97,7 +114,11 @@ app.use(
   })
 );
 
-app.use(express.json({ limit: "1mb" }));
+app.use(
+  express.json({
+    limit: "1mb"
+  })
+);
 
 app.use(
   express.urlencoded({
@@ -122,12 +143,18 @@ app.use(
 
     cookie: {
       httpOnly: true,
+
       sameSite: "lax",
 
       secure:
-        process.env.NODE_ENV === "production",
+        process.env.NODE_ENV ===
+        "production",
 
-      maxAge: 1000 * 60 * 60 * 8
+      maxAge:
+        1000 *
+        60 *
+        60 *
+        8
     }
   })
 );
@@ -139,7 +166,10 @@ app.use(
 
 app.use(
   express.static(
-    path.join(__dirname, "public")
+    path.join(
+      __dirname,
+      "public"
+    )
   )
 );
 
@@ -156,6 +186,378 @@ const portalNames = {
 
 
 // ======================================================
+// WHATSAPP CONFIGURATION
+// ======================================================
+
+const whatsappConfig = {
+  accessToken:
+    process.env.WHATSAPP_ACCESS_TOKEN || "",
+
+  phoneNumberId:
+    process.env.WHATSAPP_PHONE_NUMBER_ID || "",
+
+  apiVersion:
+    process.env.WHATSAPP_API_VERSION ||
+    "v23.0",
+
+  templateName:
+    process.env.WHATSAPP_TEMPLATE_NAME ||
+    "new_seva_swasthya_request",
+
+  templateLanguage:
+    process.env.WHATSAPP_TEMPLATE_LANGUAGE ||
+    "en_US"
+};
+
+
+// ======================================================
+// ADMIN WHATSAPP NUMBERS
+// ======================================================
+
+const adminPhones = {
+  mental:
+    process.env.MENTAL_ADMIN_PHONE || "",
+
+  physical:
+    process.env.PHYSICAL_ADMIN_PHONE || "",
+
+  financial:
+    process.env.FINANCIAL_ADMIN_PHONE || "",
+
+  super:
+    process.env.SUPER_ADMIN_PHONE || ""
+};
+
+
+// ======================================================
+// SEND WHATSAPP TEMPLATE MESSAGE
+// ======================================================
+
+function sendWhatsAppNotification(
+  phoneNumber,
+  problem
+) {
+  return new Promise(
+    (resolve, reject) => {
+
+      if (
+        !whatsappConfig.accessToken ||
+        !whatsappConfig.phoneNumberId
+      ) {
+        console.log(
+          "WhatsApp notification skipped: WhatsApp API credentials are not configured."
+        );
+
+        return resolve({
+          sent: false,
+          skipped: true,
+          reason:
+            "WhatsApp API credentials missing"
+        });
+      }
+
+
+      if (!phoneNumber) {
+        console.log(
+          "WhatsApp notification skipped: admin phone number is missing."
+        );
+
+        return resolve({
+          sent: false,
+          skipped: true,
+          reason:
+            "Admin phone number missing"
+        });
+      }
+
+
+      // Remove +, spaces, hyphens and brackets.
+      const cleanPhone =
+        String(phoneNumber)
+          .replace(
+            /[+\s\-()]/g,
+            ""
+          );
+
+
+      const url =
+        `https://graph.facebook.com/` +
+        `${whatsappConfig.apiVersion}/` +
+        `${whatsappConfig.phoneNumberId}/messages`;
+
+
+      const requestBody = {
+
+        messaging_product:
+          "whatsapp",
+
+        to:
+          cleanPhone,
+
+        type:
+          "template",
+
+        template: {
+
+          name:
+            whatsappConfig.templateName,
+
+          language: {
+            code:
+              whatsappConfig.templateLanguage
+          },
+
+          components: [
+            {
+              type: "body",
+
+              parameters: [
+                {
+                  type: "text",
+
+                  text:
+                    String(
+                      problem.id
+                    )
+                },
+
+                {
+                  type: "text",
+
+                  text:
+                    portalNames[
+                      problem.portal
+                    ] ||
+                    "Health Portal"
+                }
+              ]
+            }
+          ]
+        }
+      };
+
+
+      const payload =
+        JSON.stringify(
+          requestBody
+        );
+
+
+      const requestUrl =
+        new URL(url);
+
+
+      const options = {
+
+        hostname:
+          requestUrl.hostname,
+
+        path:
+          requestUrl.pathname,
+
+        method:
+          "POST",
+
+        headers: {
+
+          "Authorization":
+            `Bearer ${whatsappConfig.accessToken}`,
+
+          "Content-Type":
+            "application/json",
+
+          "Content-Length":
+            Buffer.byteLength(
+              payload
+            )
+        }
+      };
+
+
+      const request =
+        https.request(
+          options,
+          response => {
+
+            let responseData =
+              "";
+
+
+            response.on(
+              "data",
+              chunk => {
+                responseData +=
+                  chunk;
+              }
+            );
+
+
+            response.on(
+              "end",
+              () => {
+
+                let parsed;
+
+                try {
+                  parsed =
+                    JSON.parse(
+                      responseData
+                    );
+                } catch {
+                  parsed =
+                    responseData;
+                }
+
+
+                if (
+                  response.statusCode >=
+                    200 &&
+                  response.statusCode <
+                    300
+                ) {
+
+                  console.log(
+                    `WhatsApp notification sent for problem #${problem.id}`
+                  );
+
+                  return resolve({
+                    sent: true,
+
+                    statusCode:
+                      response.statusCode,
+
+                    response:
+                      parsed
+                  });
+                }
+
+
+                console.error(
+                  "WhatsApp API error:",
+                  parsed
+                );
+
+
+                resolve({
+                  sent: false,
+
+                  statusCode:
+                    response.statusCode,
+
+                  response:
+                    parsed
+                });
+
+              }
+            );
+          }
+        );
+
+
+      request.on(
+        "error",
+        error => {
+
+          console.error(
+            "WhatsApp request error:",
+            error
+          );
+
+          resolve({
+            sent: false,
+
+            error:
+              error.message
+          });
+
+        }
+      );
+
+
+      request.write(
+        payload
+      );
+
+      request.end();
+    }
+  );
+}
+
+
+// ======================================================
+// NOTIFY PORTAL ADMIN
+// ======================================================
+
+async function notifyPortalAdmin(
+  problem
+) {
+  try {
+
+    const phone =
+      adminPhones[
+        problem.portal
+      ];
+
+
+    if (!phone) {
+
+      console.log(
+        `No WhatsApp number configured for ${problem.portal} admin.`
+      );
+
+      return;
+    }
+
+
+    await sendWhatsAppNotification(
+      phone,
+      problem
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Portal WhatsApp notification error:",
+      error
+    );
+  }
+}
+
+
+// ======================================================
+// NOTIFY SUPER ADMIN
+// ======================================================
+
+async function notifySuperAdmin(
+  problem
+) {
+  try {
+
+    const phone =
+      adminPhones.super;
+
+
+    if (!phone) {
+      return;
+    }
+
+
+    await sendWhatsAppNotification(
+      phone,
+      problem
+    );
+
+  } catch (error) {
+
+    console.error(
+      "Super admin WhatsApp notification error:",
+      error
+    );
+  }
+}
+
+
+// ======================================================
 // ADMIN SEEDING
 // ======================================================
 
@@ -164,29 +566,46 @@ function seedAdmin(
   password,
   role
 ) {
-  const db = readDatabase();
+
+  const db =
+    readDatabase();
+
 
   const existing =
     db.admins.find(
       admin =>
-        admin.username === username
+        admin.username ===
+        username
     );
 
+
   if (!existing) {
+
     const passwordHash =
       bcrypt.hashSync(
         password,
         12
       );
 
+
     db.admins.push({
-      id: db.nextAdminId++,
+
+      id:
+        db.nextAdminId++,
+
       username,
-      password_hash: passwordHash,
+
+      password_hash:
+        passwordHash,
+
       role
     });
 
-    writeDatabase(db);
+
+    writeDatabase(
+      db
+    );
+
 
     console.log(
       `Created admin: ${username}`
@@ -201,29 +620,40 @@ function seedAdmin(
 
 seedAdmin(
   "mental_admin",
+
   process.env.MENTAL_ADMIN_PASSWORD ||
     "mental123",
+
   "mental"
 );
 
+
 seedAdmin(
   "physical_admin",
+
   process.env.PHYSICAL_ADMIN_PASSWORD ||
     "physical123",
+
   "physical"
 );
 
+
 seedAdmin(
   "financial_admin",
+
   process.env.FINANCIAL_ADMIN_PASSWORD ||
     "financial123",
+
   "financial"
 );
 
+
 seedAdmin(
   "super_admin",
+
   process.env.SUPER_ADMIN_PASSWORD ||
     "super123",
+
   "super"
 );
 
@@ -232,21 +662,42 @@ seedAdmin(
 // AUTHENTICATION
 // ======================================================
 
-function auth(req, res, next) {
-  if (!req.session.admin) {
-    return res.status(401).json({
-      error: "Login required"
+function auth(
+  req,
+  res,
+  next
+) {
+
+  if (
+    !req.session.admin
+  ) {
+
+    return res.status(
+      401
+    ).json({
+
+      error:
+        "Login required"
+
     });
   }
+
 
   next();
 }
 
 
-function canSee(admin, portal) {
+function canSee(
+  admin,
+  portal
+) {
+
   return (
-    admin.role === "super" ||
-    admin.role === portal
+    admin.role ===
+      "super" ||
+
+    admin.role ===
+      portal
   );
 }
 
@@ -255,30 +706,40 @@ function canSee(admin, portal) {
 // HOME
 // ======================================================
 
-app.get("/", (req, res) => {
-  res.sendFile(
-    path.join(
-      __dirname,
-      "public",
-      "index.html"
-    )
-  );
-});
+app.get(
+  "/",
+  (req, res) => {
+
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "index.html"
+      )
+    );
+
+  }
+);
 
 
 // ======================================================
 // ADMIN PAGE
 // ======================================================
 
-app.get("/admin", (req, res) => {
-  res.sendFile(
-    path.join(
-      __dirname,
-      "public",
-      "admin.html"
-    )
-  );
-});
+app.get(
+  "/admin",
+  (req, res) => {
+
+    res.sendFile(
+      path.join(
+        __dirname,
+        "public",
+        "admin.html"
+      )
+    );
+
+  }
+);
 
 
 // ======================================================
@@ -288,11 +749,16 @@ app.get("/admin", (req, res) => {
 app.get(
   "/api/health",
   (req, res) => {
+
     res.json({
+
       ok: true,
+
       message:
         "Seva Swasthya server is working"
+
     });
+
   }
 );
 
@@ -304,27 +770,49 @@ app.get(
 app.get(
   "/api/db-health",
   (req, res) => {
+
     try {
-      const db = readDatabase();
+
+      const db =
+        readDatabase();
+
 
       res.json({
+
         ok: true,
-        database: "connected",
-        admins: db.admins.length,
-        problems: db.problems.length
+
+        database:
+          "connected",
+
+        admins:
+          db.admins.length,
+
+        problems:
+          db.problems.length
+
       });
+
     } catch (error) {
+
       console.error(
         "Database health error:",
         error
       );
 
-      res.status(500).json({
+
+      res.status(
+        500
+      ).json({
+
         ok: false,
+
         error:
           "Database unavailable"
+
       });
+
     }
+
   }
 );
 
@@ -336,13 +824,18 @@ app.get(
 app.get(
   "/api/session",
   (req, res) => {
+
     res.json({
+
       loggedIn:
         !!req.session.admin,
 
       admin:
-        req.session.admin || null
+        req.session.admin ||
+        null
+
     });
+
   }
 );
 
@@ -353,46 +846,82 @@ app.get(
 
 app.post(
   "/api/submit",
-  (req, res) => {
+  async (req, res) => {
+
     try {
+
       const {
+
         portal,
+
         name,
+
         phone,
+
         anonymous,
+
         urgency,
+
         title,
+
         description
+
       } = req.body;
+
 
       // -----------------------------
       // VALIDATION
       // -----------------------------
 
-      if (!portalNames[portal]) {
-        return res.status(400).json({
+      if (
+        !portalNames[
+          portal
+        ]
+      ) {
+
+        return res.status(
+          400
+        ).json({
+
           error:
             "Invalid portal"
+
         });
       }
+
 
       if (
         !title ||
-        !String(title).trim()
+        !String(
+          title
+        ).trim()
       ) {
-        return res.status(400).json({
+
+        return res.status(
+          400
+        ).json({
+
           error:
             "Problem title is required"
+
         });
       }
 
+
       if (
         !description ||
-        !String(description).trim()
+        !String(
+          description
+        ).trim()
       ) {
-        return res.status(400).json({
+
+        return res.status(
+          400
+        ).json({
+
           error:
             "Problem description is required"
+
         });
       }
 
@@ -401,7 +930,9 @@ app.post(
       // DATABASE
       // -----------------------------
 
-      const db = readDatabase();
+      const db =
+        readDatabase();
+
 
       const isAnonymous =
         anonymous === true ||
@@ -409,58 +940,87 @@ app.post(
 
 
       const problem = {
-        id: db.nextProblemId++,
+
+        id:
+          db.nextProblemId++,
 
         portal,
 
         name:
           isAnonymous
             ? ""
-            : String(name || "").trim(),
+            : String(
+                name || ""
+              ).trim(),
 
         phone:
           isAnonymous
             ? ""
-            : String(phone || "").trim(),
+            : String(
+                phone || ""
+              ).trim(),
 
         anonymous:
           isAnonymous,
 
         urgency:
-          urgency === "urgent"
+          urgency ===
+            "urgent"
             ? "urgent"
             : "normal",
 
         title:
-          String(title)
+          String(
+            title
+          )
             .trim()
-            .substring(0, 120),
+            .substring(
+              0,
+              120
+            ),
 
         description:
-          String(description)
+          String(
+            description
+          )
             .trim()
-            .substring(0, 5000),
+            .substring(
+              0,
+              5000
+            ),
 
-        status: "new",
+        status:
+          "new",
 
-        admin_note: "",
+        admin_note:
+          "",
 
         created_at:
-          new Date().toISOString()
+          new Date()
+            .toISOString()
       };
 
 
-      db.problems.push(problem);
+      db.problems.push(
+        problem
+      );
 
 
       const saved =
-        writeDatabase(db);
+        writeDatabase(
+          db
+        );
 
 
       if (!saved) {
-        return res.status(500).json({
+
+        return res.status(
+          500
+        ).json({
+
           error:
             "Unable to save your concern"
+
         });
       }
 
@@ -470,26 +1030,88 @@ app.post(
       );
 
 
+      // ==================================================
+      // WHATSAPP NOTIFICATION
+      // ==================================================
+
+      // Send to the admin of the selected portal.
+      //
+      // We intentionally do NOT send the full problem
+      // description/name/phone through WhatsApp.
+      // The admin can log in to the secure Admin Portal.
+      //
+      // Do not await this notification before responding
+      // to the user. A WhatsApp/API problem should never
+      // prevent a successfully saved problem from being
+      // submitted.
+
+      notifyPortalAdmin(
+        problem
+      ).catch(
+        error => {
+
+          console.error(
+            "Portal notification failed:",
+            error
+          );
+
+        }
+      );
+
+
+      // ==================================================
+      // OPTIONAL SUPER ADMIN NOTIFICATION
+      // ==================================================
+
+      // If SUPER_ADMIN_PHONE is configured, the super
+      // admin receives a notification for every problem.
+
+      notifySuperAdmin(
+        problem
+      ).catch(
+        error => {
+
+          console.error(
+            "Super admin notification failed:",
+            error
+          );
+
+        }
+      );
+
+
       // -----------------------------
       // RESPONSE
       // -----------------------------
 
       res.json({
+
         ok: true,
-        id: problem.id
+
+        id:
+          problem.id
+
       });
 
     } catch (error) {
+
       console.error(
         "Submit error:",
         error
       );
 
-      res.status(500).json({
+
+      res.status(
+        500
+      ).json({
+
         error:
           "Server error while submitting concern"
+
       });
+
     }
+
   }
 );
 
@@ -501,19 +1123,27 @@ app.post(
 app.post(
   "/api/login",
   (req, res) => {
+
     try {
+
       const {
         username,
         password
       } = req.body;
 
+
       if (
         !username ||
         !password
       ) {
-        return res.status(400).json({
+
+        return res.status(
+          400
+        ).json({
+
           error:
             "Username and password are required"
+
         });
       }
 
@@ -526,37 +1156,58 @@ app.post(
         db.admins.find(
           item =>
             item.username ===
-            String(username).trim()
+            String(
+              username
+            ).trim()
         );
 
 
       if (!admin) {
-        return res.status(401).json({
+
+        return res.status(
+          401
+        ).json({
+
           error:
             "Invalid username or password"
+
         });
       }
 
 
       const passwordCorrect =
         bcrypt.compareSync(
-          String(password),
+          String(
+            password
+          ),
           admin.password_hash
         );
 
 
       if (!passwordCorrect) {
-        return res.status(401).json({
+
+        return res.status(
+          401
+        ).json({
+
           error:
             "Invalid username or password"
+
         });
       }
 
 
       req.session.admin = {
-        id: admin.id,
-        username: admin.username,
-        role: admin.role
+
+        id:
+          admin.id,
+
+        username:
+          admin.username,
+
+        role:
+          admin.role
+
       };
 
 
@@ -566,23 +1217,33 @@ app.post(
 
 
       res.json({
+
         ok: true,
 
         admin:
           req.session.admin
+
       });
 
     } catch (error) {
+
       console.error(
         "Login error:",
         error
       );
 
-      res.status(500).json({
+
+      res.status(
+        500
+      ).json({
+
         error:
           "Server error during login"
+
       });
+
     }
+
   }
 );
 
@@ -599,26 +1260,39 @@ app.post(
       error => {
 
         if (error) {
+
           console.error(
             "Logout error:",
             error
           );
 
-          return res.status(500).json({
+
+          return res.status(
+            500
+          ).json({
+
             error:
               "Unable to logout"
+
           });
+
         }
+
 
         res.clearCookie(
           "connect.sid"
         );
 
+
         res.json({
+
           ok: true
+
         });
+
       }
     );
+
   }
 );
 
@@ -637,6 +1311,7 @@ app.get(
       const db =
         readDatabase();
 
+
       const role =
         req.session.admin.role;
 
@@ -644,7 +1319,9 @@ app.get(
       let problems;
 
 
-      if (role === "super") {
+      if (
+        role === "super"
+      ) {
 
         problems =
           db.problems;
@@ -654,7 +1331,8 @@ app.get(
         problems =
           db.problems.filter(
             problem =>
-              problem.portal === role
+              problem.portal ===
+              role
           );
 
       }
@@ -670,20 +1348,25 @@ app.get(
               a.created_at
             ).getTime();
 
+
           const dateB =
             new Date(
               b.created_at
             ).getTime();
 
+
           return (
             dateB - dateA ||
             b.id - a.id
           );
+
         }
       );
 
 
-      res.json(problems);
+      res.json(
+        problems
+      );
 
     } catch (error) {
 
@@ -692,11 +1375,18 @@ app.get(
         error
       );
 
-      res.status(500).json({
+
+      res.status(
+        500
+      ).json({
+
         error:
           "Unable to load problems"
+
       });
+
     }
+
   }
 );
 
@@ -713,7 +1403,9 @@ app.patch(
     try {
 
       const id =
-        Number(req.params.id);
+        Number(
+          req.params.id
+        );
 
 
       const db =
@@ -728,10 +1420,16 @@ app.patch(
 
 
       if (!problem) {
-        return res.status(404).json({
+
+        return res.status(
+          404
+        ).json({
+
           error:
             "Problem not found"
+
         });
+
       }
 
 
@@ -741,10 +1439,16 @@ app.patch(
           problem.portal
         )
       ) {
-        return res.status(403).json({
+
+        return res.status(
+          403
+        ).json({
+
           error:
             "You are not allowed to update this problem"
+
         });
+
       }
 
 
@@ -753,9 +1457,13 @@ app.patch(
       // -----------------------------
 
       const allowedStatuses = [
+
         "new",
+
         "in_progress",
+
         "resolved"
+
       ];
 
 
@@ -764,8 +1472,10 @@ app.patch(
           req.body.status
         )
       ) {
+
         problem.status =
           req.body.status;
+
       }
 
 
@@ -777,31 +1487,48 @@ app.patch(
         typeof req.body.admin_note ===
         "string"
       ) {
+
         problem.admin_note =
           req.body.admin_note
-            .substring(0, 2000);
+            .substring(
+              0,
+              2000
+            );
+
       }
 
 
       problem.updated_at =
-        new Date().toISOString();
+        new Date()
+          .toISOString();
 
 
       const saved =
-        writeDatabase(db);
+        writeDatabase(
+          db
+        );
 
 
       if (!saved) {
-        return res.status(500).json({
+
+        return res.status(
+          500
+        ).json({
+
           error:
             "Unable to save changes"
+
         });
+
       }
 
 
       res.json({
+
         ok: true,
+
         problem
+
       });
 
     } catch (error) {
@@ -811,11 +1538,18 @@ app.patch(
         error
       );
 
-      res.status(500).json({
+
+      res.status(
+        500
+      ).json({
+
         error:
           "Unable to update problem"
+
       });
+
     }
+
   }
 );
 
@@ -842,7 +1576,9 @@ app.get(
       let problems;
 
 
-      if (role === "super") {
+      if (
+        role === "super"
+      ) {
 
         problems =
           db.problems;
@@ -852,16 +1588,24 @@ app.get(
         problems =
           db.problems.filter(
             problem =>
-              problem.portal === role
+              problem.portal ===
+              role
           );
 
       }
 
 
       const stats = {
-        new: 0,
-        in_progress: 0,
-        resolved: 0
+
+        new:
+          0,
+
+        in_progress:
+          0,
+
+        resolved:
+          0
+
       };
 
 
@@ -888,7 +1632,9 @@ app.get(
         problems.length;
 
 
-      res.json(stats);
+      res.json(
+        stats
+      );
 
     } catch (error) {
 
@@ -897,11 +1643,18 @@ app.get(
         error
       );
 
-      res.status(500).json({
+
+      res.status(
+        500
+      ).json({
+
         error:
           "Unable to load statistics"
+
       });
+
     }
+
   }
 );
 
@@ -914,9 +1667,13 @@ app.use(
   "/api",
   (req, res) => {
 
-    res.status(404).json({
+    res.status(
+      404
+    ).json({
+
       error:
         "API endpoint not found"
+
     });
 
   }
@@ -946,6 +1703,16 @@ app.listen(
 
     console.log(
       "Database: JSON"
+    );
+
+    console.log(
+      "WhatsApp notifications: " +
+      (
+        whatsappConfig.accessToken &&
+        whatsappConfig.phoneNumberId
+          ? "CONFIGURED"
+          : "NOT CONFIGURED"
+      )
     );
 
     console.log(
