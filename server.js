@@ -284,6 +284,79 @@ app.post("/api/submit", (req, res) => {
 // =========================
 app.post("/api/login", (req, res) => {
   try {
+    console.log("LOGIN REQUEST RECEIVED");
+
+    const username = String(req.body.username || "").trim();
+    const password = String(req.body.password || "");
+
+    console.log("Username:", username);
+
+    if (!username || !password) {
+      return res.status(400).json({
+        ok: false,
+        error: "Username and password are required"
+      });
+    }
+
+    const admin = db
+      .prepare(`
+        SELECT *
+        FROM admins
+        WHERE username = ?
+      `)
+      .get(username);
+
+    if (!admin) {
+      console.log("Admin not found:", username);
+
+      return res.status(401).json({
+        ok: false,
+        error: "Invalid username or password"
+      });
+    }
+
+    const passwordCorrect = bcrypt.compareSync(
+      password,
+      admin.password_hash
+    );
+
+    if (!passwordCorrect) {
+      console.log("Wrong password for:", username);
+
+      return res.status(401).json({
+        ok: false,
+        error: "Invalid username or password"
+      });
+    }
+
+    req.session.admin = {
+      id: admin.id,
+      username: admin.username,
+      role: admin.role,
+      phone: admin.phone || ""
+    };
+
+    console.log(
+      "LOGIN SUCCESS:",
+      admin.username,
+      admin.role
+    );
+
+    res.status(200).json({
+      ok: true,
+      admin: req.session.admin
+    });
+
+  } catch (error) {
+    console.error("LOGIN ERROR:", error);
+
+    res.status(500).json({
+      ok: false,
+      error: "Login server error: " + error.message
+    });
+  }
+});
+  try {
     const username = String(req.body.username || "").trim();
     const password = String(req.body.password || "");
 
